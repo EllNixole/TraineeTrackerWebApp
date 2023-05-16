@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace TraineeTracker.App.Controllers
     public class TrackersController : Controller
     {
         private readonly TraineeTrackerContext _context;
+        private readonly UserManager<Spartan> _userManager;
 
-        public TrackersController(TraineeTrackerContext context)
+        public TrackersController(TraineeTrackerContext context, UserManager<Spartan> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Trackers
