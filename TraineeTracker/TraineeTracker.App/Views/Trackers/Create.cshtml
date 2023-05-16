@@ -1,4 +1,4 @@
-﻿@model TraineeTracker.App.Models.Tracker
+﻿@model TraineeTracker.App.Models.ViewModels.CreateTrackerVM
 
 @{
     ViewData["Title"] = "Create";
@@ -51,7 +51,7 @@
                     {
                         Text = "Partially Skilled",
                         Value = "Partially Skilled",
-                        Selected = true
+                        //Selected = true
                     });
                     techSkills.Add(new SelectListItem
                     {
@@ -64,7 +64,7 @@
                         Value = "Unskilled"
                     });
                 }
-                @Html.DropDownList("yourDropName", techSkills, new { @class = "form-control" })
+                @Html.DropDownList("TechnicalSkill", techSkills, new { @class = "form-control" })
                 <span asp-validation-for="TechnicalSkill" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -80,7 +80,7 @@
                     {
                         Text = "Partially Skilled",
                         Value = "Partially Skilled",
-                        Selected = true
+                        //Selected = true
                     });
                     spartanSkills.Add(new SelectListItem
                     {
@@ -93,7 +93,7 @@
                         Value = "Unskilled"
                     });
                 }
-                @Html.DropDownList("yourDropName", spartanSkills, new { @class = "form-control" })
+                @Html.DropDownList("SpartanSkill", spartanSkills, new { @class = "form-control" })
                 <span asp-validation-for="SpartanSkill" class="text-danger"></span>
             </div>
             <div class="form-group">

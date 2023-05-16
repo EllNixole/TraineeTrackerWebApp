@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TraineeTracker.App.Models.ViewModels;
 using TraineeTracker.App.Services;
 
@@ -18,10 +14,10 @@ namespace TraineeTracker.App.Controllers
         }
 
         // GET: Trackers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? filter = null)
         {
             var user = await _service.GetUserAsync(HttpContext);
-            var response = await _service.GetTrackersAsync(user.Data);
+            var response = await _service.GetTrackersAsync(user.Data, filter);
             return response.Success ? View(response.Data) : Problem(response.Message);
         }
 

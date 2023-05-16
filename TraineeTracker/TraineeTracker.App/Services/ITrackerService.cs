@@ -3,15 +3,15 @@ using TraineeTracker.App.Models.ViewModels;
 
 namespace TraineeTracker.App.Services
 {
-	public interface ITrackerService
-	{
-		Task<ServiceResponse<IEnumerable<TrackerVM>>> GetTrackersAsync();
-		Task<ServiceResponse<TrackerVM>> GetDetailsAsync(int? id);
-		Task<ServiceResponse<TrackerVM>> CreateTrackerAsync(int? id, CreateTrackerVM createTrackerVM);
-		Task<ServiceResponse<TrackerVM>> EditTrackerAsync(int? id, TrackerVM trackerVM);
-		Task<ServiceResponse<TrackerVM>> UpdateTrackerReviewedAsync(int? id, MarkReviewedVM markCompleteVM);
-		Task<ServiceResponse<TrackerVM>> DeleteTrackerAsync(int? id);
-		Task<ServiceResponse<Spartan>> GetUserAsync(HttpContext httpContext);
-		bool TrackerExists(int id);
-	}
+    public interface ITrackerService
+    {
+        Task<ServiceResponse<IEnumerable<TrackerVM>>> GetTrackersAsync(Spartan? spartan, string? filter = null);
+        Task<ServiceResponse<TrackerVM>> GetDetailsAsync(Spartan? spartan, int? id);
+        Task<ServiceResponse<TrackerVM>> CreateTrackerAsync(Spartan? spartan, CreateTrackerVM createTrackerVM);
+        Task<ServiceResponse<TrackerVM>> EditTrackerAsync(Spartan? spartan, int? id, TrackerVM trackerVM);
+        Task<ServiceResponse<TrackerVM>> UpdateTrackerReviewedAsync(Spartan? spartan, int? id, MarkReviewedVM markCompleteVM);
+        Task<ServiceResponse<TrackerVM>> DeleteTrackerAsync(Spartan? spartan, int? id);
+        Task<ServiceResponse<Spartan>> GetUserAsync(HttpContext httpContext);
+        bool TrackerExists(int id);
+    }
 }

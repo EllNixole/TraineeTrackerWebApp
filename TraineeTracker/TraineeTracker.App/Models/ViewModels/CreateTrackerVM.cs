@@ -24,5 +24,8 @@ namespace TraineeTracker.App.Models.ViewModels
         [StringLength(500)]
         [DisplayName("Continue")]
         public string? ContinueDoingText { get; set; }
+
+        [DisplayName("Reviewed")]
+        public bool IsReviewed { get; set; }
     }
 }
