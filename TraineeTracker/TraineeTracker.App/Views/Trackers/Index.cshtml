@@ -58,7 +58,9 @@
                 @Html.DisplayFor(modelItem => item.ContinueDoingText)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsReviewed)
+                <form asp-action="UpdateTrackerReviewed" asp-route-id="@item.Id">
+                   @Html.CheckBox("IsReviewed", item.IsReviewed, new {onChange="this.form.submit()"})
+                </form>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TechnicalSkill)
