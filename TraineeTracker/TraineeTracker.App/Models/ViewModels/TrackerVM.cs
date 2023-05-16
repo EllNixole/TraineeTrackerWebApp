@@ -27,6 +27,9 @@ namespace TraineeTracker.App.Models.ViewModels
         [DisplayName("Continue")]
         public string? ContinueDoingText { get; set; }
 
+        [DisplayName("Reviewed")]
+        public bool IsReviewed { get; set; }
+
         [DataType(DataType.Date)]
         [Display(Name = "Created")]
         public DateTime DateCreated { get; init; } = DateTime.Now;

@@ -44,6 +44,6 @@ namespace TraineeTracker.App.Models
         [ForeignKey("Spartan")]
         public string SpartanId { get; set; } = null!;
 
-        
+
     }
 }
