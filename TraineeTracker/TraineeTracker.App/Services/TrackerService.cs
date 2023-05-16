@@ -1,4 +1,5 @@
 ﻿using TraineeTracker.App.Models;
+using TraineeTracker.App.Models.ViewModels;
 
 namespace TraineeTracker.App.Services
 {
