@@ -1,10 +1,19 @@
-﻿using TraineeTracker.App.Models;
+﻿using TraineeTracker.App.Data;
+using TraineeTracker.App.Models;
 using TraineeTracker.App.Models.ViewModels;
 
 namespace TraineeTracker.App.Services
 {
 	public class TrackerService : ITrackerService
 	{
+		private readonly TraineeTrackerContext _context;
+
+		public TrackerService(TraineeTrackerContext context)
+		{
+			_context = context;
+		}
+
+
 		public Task<ServiceResponse<TrackerVM>> CreateTrackerAsync(int? id, CreateTrackerVM createTrackerVM)
 		{
 			throw new NotImplementedException();
@@ -38,6 +47,28 @@ namespace TraineeTracker.App.Services
 		public bool TrackerExists(int id)
 		{
 			throw new NotImplementedException();
+		}
+
+		public async Task<ServiceResponse<TrackerVM>> UpdateTrackerReviewedAsync(int? id, MarkReviewedVM markReviewedVM)
+		{
+			var response = new ServiceResponse<TrackerVM>();
+			if(id != markReviewedVM.Id)
+			{
+				response.Success = false;
+				response.Message = "Model error";
+				return response;
+			}
+			var tracker = await _context.TrackerItems.FindAsync(id);
+			if (tracker == null)
+			{
+				response.Success = false;
+				response.Message = "Cannot find ToDo item";
+				return response;
+			}
+			tracker.IsReviewed = markReviewedVM.IsReviewed;
+
+			await _context.SaveChangesAsync();
+			return response;
 		}
 	}
 }
