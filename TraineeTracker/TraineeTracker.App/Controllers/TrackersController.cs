@@ -125,29 +125,10 @@ namespace TraineeTracker.App.Controllers
             return View(tracker);
         }
 
-        // GET: Trackers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.TrackerItems == null)
-            {
-                return NotFound();
-            }
-
-            var tracker = await _context.TrackerItems
-                .Include(t => t.Spartan)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (tracker == null)
-            {
-                return NotFound();
-            }
-
-            return View(tracker);
-        }
-
         // POST: Trackers/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (_context.TrackerItems == null)
             {
