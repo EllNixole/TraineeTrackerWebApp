@@ -39,22 +39,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="TechnicalSkill" class="control-label"></label>
-                <input asp-for="TechnicalSkill" class="form-control" />
+                <input asp-for="TechnicalSkill" class="form-control" min="1" max="5" value="1"/>
                 <span asp-validation-for="TechnicalSkill" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SpartanSkill" class="control-label"></label>
-                <input asp-for="SpartanSkill" class="form-control" />
+                <input asp-for="SpartanSkill" class="form-control" min="1" max="5" value="1" />
+                @*NOTE: Value attribute assigns default value, min max limit the input field on the form.*@
                 <span asp-validation-for="SpartanSkill" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateCreated" class="control-label"></label>
-                <input asp-for="DateCreated" class="form-control" />
-                <span asp-validation-for="DateCreated" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SpartanId" class="control-label"></label>
-                <select asp-for="SpartanId" class ="form-control" asp-items="ViewBag.SpartanId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
