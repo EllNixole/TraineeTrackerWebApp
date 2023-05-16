@@ -9,6 +9,7 @@ namespace TraineeTracker.App.Services
 		Task<ServiceResponse<TrackerVM>> GetDetailsAsync(int? id);
 		Task<ServiceResponse<TrackerVM>> CreateTrackerAsync(int? id, CreateTrackerVM createTrackerVM);
 		Task<ServiceResponse<TrackerVM>> EditTrackerAsync(int? id, TrackerVM trackerVM);
+		Task<ServiceResponse<TrackerVM>> UpdateTrackerReviewedAsync(int? id, MarkReviewedVM markCompleteVM);
 		Task<ServiceResponse<TrackerVM>> DeleteTrackerAsync(int? id);
 		Task<ServiceResponse<Spartan>> GetUserAsync(HttpContext httpContext);
 		bool TrackerExists(int id);

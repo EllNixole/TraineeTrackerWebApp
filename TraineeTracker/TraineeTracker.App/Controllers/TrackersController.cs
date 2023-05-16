@@ -8,17 +8,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TraineeTracker.App.Data;
 using TraineeTracker.App.Models;
+using TraineeTracker.App.Models.ViewModels;
+using TraineeTracker.App.Services;
 
 namespace TraineeTracker.App.Controllers
 {
     public class TrackersController : Controller
     {
         private readonly TraineeTrackerContext _context;
+        private readonly ITrackerService _service;
         private readonly UserManager<Spartan> _userManager;
 
-        public TrackersController(TraineeTrackerContext context, UserManager<Spartan> userManager)
+        public TrackersController(TraineeTrackerContext context, UserManager<Spartan> userManager, ITrackerService service)
         {
             _context = context;
+            _service = service;
             _userManager = userManager;
         }
 
@@ -161,6 +165,12 @@ namespace TraineeTracker.App.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> UpdateTrackerReviewed(int id, MarkReviewedVM markReviewedVM)
+        {
+            var response = await _service.UpdateTrackerReviewedAsync(id, markReviewedVM);
+            return response.Success ? RedirectToAction(nameof(Index)) : Problem(response.Message);
         }
 
         private bool TrackerExists(int id)

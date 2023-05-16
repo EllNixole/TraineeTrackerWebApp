@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TraineeTracker.App.Data;
 using TraineeTracker.App.Models;
+using TraineeTracker.App.Services;
 
 namespace TraineeTracker.App
 {
@@ -24,7 +25,7 @@ namespace TraineeTracker.App
             builder.Services.AddControllersWithViews();
             builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
-
+            builder.Services.AddScoped<ITrackerService, TrackerService>();
 
             var app = builder.Build();
 
