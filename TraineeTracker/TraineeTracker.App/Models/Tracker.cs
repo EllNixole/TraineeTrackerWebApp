@@ -16,22 +16,23 @@ namespace TraineeTracker.App.Models
         public string Title { get; set; } = null!;
 
         [StringLength(500)]
+        [DisplayName("Start")]
         public string? StartDoingText { get; set; }
 
         [StringLength(500)]
+        [DisplayName("Stop")]
         public string? StopDoingText { get; set; }
 
         [StringLength(500)]
+        [DisplayName("Continue")]
         public string? ContinueDoingText { get; set; }
 
         [DisplayName("Reviewed")]
         public bool IsReviewed { get; set; }
 
-        [Range(1, 5)]
-        public int TechnicalSkill { get; set; }
+        public string TechnicalSkill { get; set; } = "Partially Skilled";
 
-        [Range(1, 5)]
-        public int SpartanSkill { get; set; }
+        public string SpartanSkill { get; set; } = "Partially Skilled";
 
         [DisplayName("Date")]
         [DataType(DataType.Date)]
