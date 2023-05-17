@@ -59,6 +59,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+<<<<<<< HEAD
         <tr>
                 @{
                     if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
@@ -68,17 +69,29 @@
                         </td>
                     }
                 }
+=======
+            var startText = Utilities.DisplayText(item.StartDoingText, 50);
+            var stopText = Utilities.DisplayText(item.StopDoingText, 50);
+            var contText = Utilities.DisplayText(item.ContinueDoingText, 50);
+            if (this.User.IsInRole("Trainer"))
+            {
+                <td>
+                    @Html.DisplayFor(modelitem => item.Spartan.UserName)
+                </td>
+            }
+            <tr>
+>>>>>>> dev
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDoingText)
+                @Html.DisplayFor(modelItem => startText)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StopDoingText)
+                    @Html.DisplayFor(modelItem => stopText)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ContinueDoingText)
+                    @Html.DisplayFor(modelItem => contText)
             </td>
             <td>
                 <form asp-action="UpdateTrackerReviewed" asp-route-id="@item.Id">
