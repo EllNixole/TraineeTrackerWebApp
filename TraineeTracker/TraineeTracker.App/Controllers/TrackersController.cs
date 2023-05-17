@@ -6,6 +6,7 @@ using TraineeTracker.App.Services;
 
 namespace TraineeTracker.App.Controllers
 {
+    [Authorize]
     public class TrackersController : Controller
     {
         private readonly ITrackerService _service;
