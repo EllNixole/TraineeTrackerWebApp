@@ -33,5 +33,7 @@ namespace TraineeTracker.App.Models.ViewModels
         [DataType(DataType.Date)]
         [Display(Name = "Created")]
         public DateTime DateCreated { get; init; } = DateTime.Now;
+
+        public Spartan? Spartan { get; set; }
     }
 }

@@ -21,6 +21,14 @@
 <table class="table">
     <thead>
         <tr>
+            @{
+                if (this.User.IsInRole("Trainer"))
+                {
+                        <th>
+                        @Html.DisplayNameFor(model => model.Spartan.UserName)
+                        </th>
+                }
+            }
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
@@ -54,6 +62,12 @@
             var startText = Utilities.DisplayText(item.StartDoingText, 50);
             var stopText = Utilities.DisplayText(item.StopDoingText, 50);
             var contText = Utilities.DisplayText(item.ContinueDoingText, 50);
+            if (this.User.IsInRole("Trainer"))
+            {
+                <td>
+                    @Html.DisplayFor(modelitem => item.Spartan.UserName)
+                </td>
+            }
             <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
