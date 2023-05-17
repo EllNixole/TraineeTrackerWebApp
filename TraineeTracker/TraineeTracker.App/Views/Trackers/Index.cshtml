@@ -9,9 +9,26 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-controller="Trackers" asp-action="Index" method="get">
+    <p>
+        <label for="filter">Filter by: </label>
+        <input type="text" id="filter" name="filter" />
+        <button type="submit">Filter</button>
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
+            @{
+                if (this.User.IsInRole("Trainer"))
+                {
+                        <th>
+                        @Html.DisplayNameFor(model => model.Spartan.UserName)
+                        </th>
+                }
+            }
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
@@ -43,6 +60,14 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+                @{
+                    if (this.User.IsInRole("Trainer"))
+                    {
+                        <td>
+                            @Html.DisplayFor(modelitem => item.Spartan.UserName)
+                        </td>
+                    }
+                }
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
