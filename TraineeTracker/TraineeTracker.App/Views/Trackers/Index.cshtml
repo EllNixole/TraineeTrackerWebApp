@@ -9,6 +9,15 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-controller="Trackers" asp-action="Index" method="get">
+    <p>
+        <label for="filter">Filter by: </label>
+        <input type="text" id="filter" name="filter" />
+        <button type="submit">Filter</button>
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
