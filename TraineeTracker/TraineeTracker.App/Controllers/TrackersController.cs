@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TraineeTracker.App.Models.ViewModels;
 using TraineeTracker.App.Services;
 
 namespace TraineeTracker.App.Controllers
 {
+    [Authorize]
     public class TrackersController : Controller
     {
         private readonly ITrackerService _service;
