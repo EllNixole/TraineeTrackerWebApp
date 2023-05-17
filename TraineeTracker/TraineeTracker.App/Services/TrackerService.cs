@@ -147,7 +147,7 @@ namespace TraineeTracker.App.Services
             {
                 trackerItems = await _context.TrackerItems.Where(t => t.SpartanId == spartan.Id).ToListAsync();
             }
-            if (role == "Trainer")
+            if (role == "Trainer" || role == "Admin")
             {
                 trackerItems = await _context.TrackerItems.Include(s => s.Spartan).ToListAsync();
             }
@@ -218,7 +218,17 @@ namespace TraineeTracker.App.Services
 
         public string GetRole(HttpContext httpContext)
         {
-            return httpContext.User.IsInRole("Trainee") ? "Trainee" : "Trainer";
+            if (httpContext.User.IsInRole("Admin"))
+            {
+                return "Admin";
+            } else if (httpContext.User.IsInRole("Trainer"))
+            {
+                return "Trainer";
+            }
+            else
+            {
+                return "Trainee";
+            }
         }
     }
 }

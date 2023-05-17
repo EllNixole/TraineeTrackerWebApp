@@ -22,7 +22,7 @@
     <thead>
         <tr>
             @{
-                if (this.User.IsInRole("Trainer"))
+                if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
                 {
                         <th>
                         @Html.DisplayNameFor(model => model.Spartan.UserName)
@@ -61,7 +61,7 @@
 @foreach (var item in Model) {
         <tr>
                 @{
-                    if (this.User.IsInRole("Trainer"))
+                    if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
                     {
                         <td>
                             @Html.DisplayFor(modelitem => item.Spartan.UserName)
