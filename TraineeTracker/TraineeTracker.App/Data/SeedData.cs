@@ -124,7 +124,7 @@ namespace TraineeTracker.App.Data
                     StopDoingText = "Goodbye",
                     ContinueDoingText = "...",
                     IsReviewed = true,
-                    Spartan = phil
+                    Spartan = peter
                 },
                 new Tracker
                 {
@@ -151,7 +151,7 @@ namespace TraineeTracker.App.Data
                     StopDoingText = "it",
                     ContinueDoingText = "it",
                     IsReviewed = false,
-                    Spartan = phil
+                    Spartan = peter
                 }
             );
             context.SaveChanges();
