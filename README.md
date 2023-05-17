@@ -1,6 +1,6 @@
 # Trainee Tracker Application
 
-The Trainee Tracker Application is an ASP.NET MVC application that allows trainees to create, read, update, and delete their tracker entries. Trainers can view all entries from all trainees, but they are restricted from creating, editing, or deleting entries. *Additionally, an admin user has the authority to manage user roles and access a list of all users.*
+The Trainee Tracker Application is an ASP.NET MVC application that allows trainees to create, read, update, and delete their tracker entries. Trainers can view all entries from all trainees, but they are restricted from creating, editing, or deleting entries. Additionally, an admin user has the authority to access a list of all users. We plan to extend the functionality of the admin role to be able to manage users and their roles.
 <br></br>
 
 ## Installation
@@ -49,9 +49,17 @@ The Trainee Tracker Application is an ASP.NET MVC application that allows traine
 <br></br>
 
 ## Admin Functionality
-- *User Management: Admin users have access to an admin page, where they can view a list of all users registered in the system and modify their roles.*
+- User Management: Admin users have access to an admin page, where they can view a list of all users registered in the system. 
 
-- *Change User Role: Admin users can change the role of any user, including promoting trainees to trainers or demoting trainers to trainees.*
+- *Change User Role (Coming soon): We intend for the admin to be able to edit the roles of other users.*
+<br></br>
+
+## Service Layer
+The Trainee Tracker Application follows a layered architecture and incorporates a service layer to encapsulate business logic and promote separation of concerns. It contains the core application logic, such as validation, data manipulation, and complex operations. By implementing a service layer, the application achieves better modularity, maintainability, and testability. The service layer allows for easier reuse of business logic across different controllers and promotes a more structured and organized codebase.
+<br></br>
+
+## Dependency Injection Container
+The Trainee Tracker Application uses a dependency injection (DI) container to manage the dependencies between its components. DI containers  inject dependencies from outside sources rather than creating them internally. This promotes modularity, testability, and flexibility. The application uses a DI container to inject the IService, IMapper and TraineeTrackerContext to wherever they are needed.
 <br></br>
 
 ## Technologies Used
@@ -62,6 +70,8 @@ The Trainee Tracker Application is an ASP.NET MVC application that allows traine
 ### Entity Framework
 
 ### SQL Server
+
+### HTML & CSS
 <br>
 
 ## Acknowledgements
