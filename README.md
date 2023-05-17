@@ -4,7 +4,7 @@ The Trainee Tracker Application is an ASP.NET MVC application that allows traine
 <br></br>
 
 ## Installation
-1. Clone the repository: git clone https://github.com/your-repo/trainee-tracker.git
+1. Clone the repository: git clone https://github.com/fuzzylogician27/trainee-tracker.git
 
 2. Open the project in Visual Studio.
 
