@@ -11,9 +11,10 @@ namespace TraineeTracker.App.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly TraineeTrackerContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, TraineeTrackerContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
