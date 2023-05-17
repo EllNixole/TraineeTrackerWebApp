@@ -22,7 +22,7 @@
     <thead>
         <tr>
             @{
-                if (this.User.IsInRole("Trainer"))
+                if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
                 {
                         <th>
                         @Html.DisplayNameFor(model => model.Spartan.UserName)
@@ -59,16 +59,25 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-            var startText = Utilities.DisplayText(item.StartDoingText, 50);
-            var stopText = Utilities.DisplayText(item.StopDoingText, 50);
-            var contText = Utilities.DisplayText(item.ContinueDoingText, 50);
-            if (this.User.IsInRole("Trainer"))
-            {
-                <td>
-                    @Html.DisplayFor(modelitem => item.Spartan.UserName)
-                </td>
+        <tr>
+            @{
+                if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
+                {
+                    <td>
+                            @Html.DisplayFor(modelitem => item.Spartan.UserName)
+                    </td>
+                }
+                
+                var startText = Utilities.DisplayText(item.StartDoingText, 50);
+                var stopText = Utilities.DisplayText(item.StopDoingText, 50);
+                var contText = Utilities.DisplayText(item.ContinueDoingText, 50);
+                if (this.User.IsInRole("Trainer"))
+                {
+                    <td>
+                        @Html.DisplayFor(modelitem => item.Spartan.UserName)
+                    </td>
+                }
             }
-            <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>

@@ -33,6 +33,11 @@ namespace TraineeTracker.App.Data
                 Name = "Trainee",
                 NormalizedName = "TRAINEE"
             };
+            var admin = new IdentityRole
+            {
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            };
 
 
             roleStore
@@ -41,6 +46,10 @@ namespace TraineeTracker.App.Data
               .GetResult();
             roleStore
                 .CreateAsync(trainee)
+                .GetAwaiter()
+                .GetResult();
+            roleStore
+                .CreateAsync(admin)
                 .GetAwaiter()
                 .GetResult();
 
@@ -81,12 +90,12 @@ namespace TraineeTracker.App.Data
                 new IdentityUserRole<string>
                 {
                     UserId = userManager.GetUserIdAsync(phil).Result,
-                    RoleId = roleStore.GetRoleIdAsync(trainer).Result
+                    RoleId = roleStore.GetRoleIdAsync(admin).Result
                 },
                 new IdentityUserRole<string>
                 {
                     UserId = userManager.GetUserIdAsync(nish).Result,
-                    RoleId = roleStore.GetRoleIdAsync(trainee).Result
+                    RoleId = roleStore.GetRoleIdAsync(trainer).Result
                 },
                new IdentityUserRole<string>
                 {
