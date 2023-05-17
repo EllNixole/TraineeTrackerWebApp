@@ -149,7 +149,7 @@ namespace TraineeTracker.App.Services
             }
             if (role == "Trainer")
             {
-                trackerItems = await _context.TrackerItems.ToListAsync();
+                trackerItems = await _context.TrackerItems.Include(s => s.Spartan).ToListAsync();
             }
             if (string.IsNullOrEmpty(filter))
             {
@@ -157,7 +157,9 @@ namespace TraineeTracker.App.Services
                 return response;
             }
             response.Data = trackerItems
-                .Where(t => t.Title.Contains(filter!, StringComparison.OrdinalIgnoreCase)).Select(t => _mapper.Map<TrackerVM>(t));
+                .Where(t => (t.Title.Contains(filter!, StringComparison.OrdinalIgnoreCase)) ||
+                (t.Spartan.UserName.Contains(filter!, StringComparison.OrdinalIgnoreCase)))
+            .Select(t => _mapper.Map<TrackerVM>(t));
             return response;
 
         }
