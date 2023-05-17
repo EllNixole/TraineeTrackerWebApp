@@ -1,0 +1,42 @@
+﻿@model Tuple<List<Spartan>,List<string>>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Spartans</h1>
+
+<p>
+    
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                Role
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{var count = 0;
+        foreach (var item in Model.Item1)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Item2[count])
+                </td>
+            </tr>
+            count++;
+        }
+        }
+
+    </tbody>
+</table>

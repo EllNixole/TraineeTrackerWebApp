@@ -9,20 +9,31 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-controller="Trackers" asp-action="Index" method="get">
+    <p>
+        <label for="filter">Filter by: </label>
+        <input type="text" id="filter" name="filter" />
+        <button type="submit">Filter</button>
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
+            @{
+                if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
+                {
+                        <th>
+                        @Html.DisplayNameFor(model => model.Spartan.UserName)
+                        </th>
+                }
+            }
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDoingText)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StopDoingText)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContinueDoingText)
+                
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsReviewed)
@@ -42,18 +53,32 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+
+            var startText = Utilities.DisplayText(item.StartDoingText, 50);
+            var stopText = Utilities.DisplayText(item.StopDoingText, 50);
+            var contText = Utilities.DisplayText(item.ContinueDoingText, 50);
         <tr>
+            @{
+                if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
+                {
+                    <td>
+                            @Html.DisplayFor(modelitem => item.Spartan.UserName)
+                    </td>
+                }
+            }
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDoingText)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StopDoingText)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContinueDoingText)
+                <div id="TextFields">
+                    <table>
+							<tbody>
+								<tr><td><strong>@Html.DisplayNameFor(modelItem=>item.StartDoingText):</strong> @Html.DisplayFor(modelItem => startText)</td></tr>
+                                <tr><td><strong>@Html.DisplayNameFor(modelItem=>item.StopDoingText):</strong> @Html.DisplayFor(modelItem => stopText)</td></tr>
+                                <tr><td><strong>@Html.DisplayNameFor(modelItem=>item.ContinueDoingText):</strong> @Html.DisplayFor(modelItem => contText)</td></tr>
+							</tbody>
+                    </table>
+                </div>
             </td>
             <td>
                 <form asp-action="UpdateTrackerReviewed" asp-route-id="@item.Id">
