@@ -17,7 +17,7 @@ namespace TraineeTracker.App.Controllers
         }
 
         // GET: Trackers
-        [Authorize(Roles = "Trainee, Trainer")]
+        [Authorize(Roles = "Trainee, Trainer, Admin")]
         public async Task<IActionResult> Index(string? filter = null)
         {
             var user = await _service.GetUserAsync(HttpContext);
@@ -26,7 +26,7 @@ namespace TraineeTracker.App.Controllers
         }
 
         // GET: Trackers/Details/5
-        [Authorize(Roles = "Trainee, Trainer")]
+        [Authorize(Roles = "Trainee, Trainer, Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             var user = await _service.GetUserAsync(HttpContext);
@@ -35,7 +35,7 @@ namespace TraineeTracker.App.Controllers
         }
 
         // GET: Trackers/Create
-        [Authorize(Roles = "Trainee")]
+        [Authorize(Roles = "Trainee, Admin")]
         public IActionResult Create()
         {
             return View();
@@ -46,7 +46,7 @@ namespace TraineeTracker.App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Trainee")]
+        [Authorize(Roles = "Trainee, Admin")]
         public async Task<IActionResult> Create(CreateTrackerVM createTrackerVM)
         {
             var user = await _service.GetUserAsync(HttpContext);
@@ -55,7 +55,7 @@ namespace TraineeTracker.App.Controllers
         }
 
         // GET: Trackers/Edit/5
-        [Authorize(Roles = "Trainee, Trainer")]
+        [Authorize(Roles = "Trainee, Trainer, Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             var user = await _service.GetUserAsync(HttpContext);
@@ -68,7 +68,7 @@ namespace TraineeTracker.App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Trainee")]
+        [Authorize(Roles = "Trainee, Admin")]
         public async Task<IActionResult> Edit(int id, TrackerVM trackerVM)
         {
             var user = await _service.GetUserAsync(HttpContext);
@@ -79,7 +79,7 @@ namespace TraineeTracker.App.Controllers
         // POST: Trackers/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Trainee, Trainer")]
+        [Authorize(Roles = "Trainee, Trainer, Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var user = await _service.GetUserAsync(HttpContext);
@@ -87,7 +87,7 @@ namespace TraineeTracker.App.Controllers
             return response.Success ? RedirectToAction(nameof(Index)) : Problem(response.Message);
         }
 
-        [Authorize(Roles = "Trainee")]
+        [Authorize(Roles = "Trainee, Admin")]
         public async Task<IActionResult> UpdateTrackerReviewed(int id, MarkReviewedVM markReviewedVM)
         {
             var user = await _service.GetUserAsync(HttpContext);

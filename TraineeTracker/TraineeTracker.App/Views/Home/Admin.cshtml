@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Spartan>
+﻿@model Tuple<List<Spartan>,List<string>>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,30 +13,30 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                Username
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                Role
             </th>
             
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @{var count = 0;
+        foreach (var item in Model.Item1)
         {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td class="btn-group-vertical">
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-                    
+                    @Html.DisplayFor(modelItem => Model.Item2[count])
                 </td>
             </tr>
+            count++;
         }
+        }
+
     </tbody>
 </table>
