@@ -83,5 +83,106 @@ namespace TraineeTrackerTests
 
             Assert.That(raResult!.ActionName, Is.EqualTo("Index"));
         }
+
+        [Test]
+        [Category("Creation")]
+        public void Create_WithUnSuccessfulServiceResponse_ReturnsProblems()
+        {
+            var mockService = new Mock<ITrackerService>();
+            var fakeSpartanServiceResponse = Helper.GetSpartanServiceResponse();
+            mockService.Setup(s => s.GetUserAsync(It.IsAny<HttpContext>()).Result).Returns(fakeSpartanServiceResponse);
+            mockService.Setup(s => s.CreateTrackerAsync(fakeSpartanServiceResponse.Data, It.IsAny<CreateTrackerVM>()).Result).Returns(Helper.GetFailedServiceResponse<TrackerVM>("Problem!"));
+
+            _sut = new TrackersController(mockService.Object);
+
+            var result = _sut.Create(It.IsAny<CreateTrackerVM>()).Result;
+
+            Assert.That(result, Is.InstanceOf<ViewResult>());
+
+            var viewResult = result as ViewResult;
+
+            Assert.That(viewResult.Model, Is.Null);
+        }
+        //Add in failed spartan clause;
+        [Test]
+        [Category("Details")]
+        public void Details_WithSuccessfulServiceResponse_ReturnsView()
+        {
+            var mockService = new Mock<ITrackerService>();
+            var fakeSpartanServiceResponse = Helper.GetSpartanServiceResponse();
+            mockService.Setup(s => s.GetUserAsync(It.IsAny<HttpContext>()).Result).Returns(fakeSpartanServiceResponse);
+            mockService.Setup(s => s.GetDetailsAsync(fakeSpartanServiceResponse.Data, It.IsAny<int>()).Result).Returns(Helper.GetTrackerServiceResponse());
+
+            _sut = new TrackersController(mockService.Object);
+
+            var result = _sut.Details(It.IsAny<int>()).Result;
+
+            Assert.That(result, Is.InstanceOf<ViewResult>());
+
+            var viewResult = result as ViewResult;
+
+            Assert.That(viewResult.Model, Is.InstanceOf<TrackerVM>());
+        }
+
+        [Test]
+        [Category("Details")]
+        public void Details_WithUnSuccessfulServiceResponse_ReturnsProblem()
+        {
+            var mockService = new Mock<ITrackerService>();
+            var fakeSpartanServiceResponse = Helper.GetSpartanServiceResponse();
+            mockService.Setup(s => s.GetUserAsync(It.IsAny<HttpContext>()).Result).Returns(fakeSpartanServiceResponse);
+            mockService.Setup(s => s.GetDetailsAsync(fakeSpartanServiceResponse.Data, It.IsAny<int>()).Result).Returns(Helper.GetFailedServiceResponse<TrackerVM>("Problem!"));
+
+            _sut = new TrackersController(mockService.Object);
+
+            var result = _sut.Details(It.IsAny<int>()).Result;
+
+            Assert.That(result, Is.InstanceOf<ObjectResult>());
+
+            var objResult = result as ObjectResult;
+
+            Assert.That(objResult.ToJson(),Does.Contain("Problem!"));
+            Assert.That(objResult.StatusCode, Is.EqualTo(500));
+        }
+        //Add in failed spartan response clause;
+        [Test]
+        [Category("Update")]
+        public void Update_WithSuccessfulServiceResponse_ReturnsRedirectedAction()
+        {
+            var mockService = new Mock<ITrackerService>();
+            var fakeSpartanServiceResponse = Helper.GetSpartanServiceResponse();
+            mockService.Setup(s => s.GetUserAsync(It.IsAny<HttpContext>()).Result).Returns(fakeSpartanServiceResponse);
+            mockService.Setup(s => s.UpdateTrackerReviewedAsync(fakeSpartanServiceResponse.Data,It.IsAny<int>(),It.IsAny<MarkReviewedVM>()).Result).Returns(Helper.GetTrackerServiceResponse());
+
+            _sut = new TrackersController(mockService.Object);
+
+            var result = _sut.UpdateTrackerReviewed(It.IsAny<int>(), It.IsAny<MarkReviewedVM>()).Result;
+
+            Assert.That(result, Is.InstanceOf<RedirectToActionResult>());
+
+            var raResult = result as RedirectToActionResult;
+
+            Assert.That(raResult!.ActionName,Is.EqualTo("Index"));
+        }
+        [Test]
+        [Category("Update")]
+        public void Update_WithUnSuccessfulServiceResponse_ReturnsProblem()
+        {
+            var mockService = new Mock<ITrackerService>();
+            var fakeSpartanServiceResponse = Helper.GetSpartanServiceResponse();
+            mockService.Setup(s => s.GetUserAsync(It.IsAny<HttpContext>()).Result).Returns(fakeSpartanServiceResponse);
+            mockService.Setup(s => s.UpdateTrackerReviewedAsync(fakeSpartanServiceResponse.Data, It.IsAny<int>(), It.IsAny<MarkReviewedVM>()).Result).Returns(Helper.GetFailedServiceResponse<TrackerVM>("Problem!"));
+
+            _sut = new TrackersController(mockService.Object);
+
+            var result = _sut.UpdateTrackerReviewed(It.IsAny<int>(),It.IsAny<MarkReviewedVM>()).Result;
+
+            Assert.That(result, Is.InstanceOf<ObjectResult>());
+
+            var objResult = result as ObjectResult;
+
+            Assert.That(objResult.ToJson(), Does.Contain("Problem!"));
+            Assert.That(objResult.StatusCode, Is.EqualTo(500));
+        }
     }
 }
