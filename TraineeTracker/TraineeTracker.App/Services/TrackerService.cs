@@ -9,9 +9,9 @@ namespace TraineeTracker.App.Services
 {
     public class TrackerService : ITrackerService
     {
-        private readonly TraineeTrackerContext _context;
-        private readonly IMapper _mapper;
-        private readonly UserManager<Spartan> _userManager;
+        private TraineeTrackerContext _context;
+        private IMapper _mapper;
+        private UserManager<Spartan> _userManager;
 
         public TrackerService(TraineeTrackerContext context, IMapper mapper, UserManager<Spartan> userManager)
         {
@@ -20,22 +20,22 @@ namespace TraineeTracker.App.Services
             _userManager = userManager;
         }
 
-
-        public async Task<ServiceResponse<TrackerVM>> CreateTrackerAsync(Spartan? spartan, CreateTrackerVM createTrackerVM)
+        public async Task<ServiceResponse<CreateTrackerVM>> CreateTrackerEntriesAsync(Spartan? spartan, CreateTrackerVM trackerCreateVM)
         {
-            var response = new ServiceResponse<TrackerVM>();
+            var response = new ServiceResponse<CreateTrackerVM>();
+
             if (spartan == null)
             {
                 response.Success = false;
                 response.Message = "No user found";
                 return response;
             }
-
             try
             {
-                var tracker = _mapper.Map<Tracker>(createTrackerVM);
-                tracker.Spartan = spartan;
-                _context.Add(tracker);
+                var trackerToDo = _mapper.Map<Tracker>(trackerCreateVM);
+                trackerToDo.Spartan = spartan;
+                trackerToDo.SpartanId = spartan.Id;
+                _context.Add(trackerToDo);
                 await _context.SaveChangesAsync();
                 return response;
             }
@@ -47,86 +47,140 @@ namespace TraineeTracker.App.Services
             return response;
         }
 
-
-        public async Task<ServiceResponse<TrackerVM>> DeleteTrackerAsync(Spartan? spartan, int? id)
+        public async Task<ServiceResponse<TrackerVM>> DeleteTrackerEntriesAsync(Spartan? spartan, int? id)
         {
             var response = new ServiceResponse<TrackerVM>();
-            var tracker = await _context.TrackerItems.FindAsync(id);
+
+            var trackerToDo = await _context.TrackerItems.FindAsync(id);
+
             if (spartan == null)
             {
                 response.Success = false;
                 response.Message = "No user found";
                 return response;
             }
-            if (tracker == null)
+            if (trackerToDo == null)
             {
                 response.Success = false;
-                response.Message = "No Tracker Items";
+                response.Message = "There are no tracker entries to do!";
                 return response;
             }
-            if (tracker.SpartanId == spartan.Id)
+
+            if (trackerToDo.SpartanId == spartan.Id)
             {
-                _context.TrackerItems.Remove(tracker);
+                _context.TrackerItems.Remove(trackerToDo);
                 await _context.SaveChangesAsync();
                 response.Success = true;
-                response.Message = "Tracker item removed";
+                response.Message = "Tracker entry removed";
             }
             return response;
         }
 
-        public async Task<ServiceResponse<TrackerVM>> EditTrackerAsync(Spartan? spartan, int? id, TrackerVM trackerVM)
+        public async Task<ServiceResponse<EditTrackerVM>> EditTrackerEntriesAsync(Spartan? spartan, int? id, EditTrackerVM trackerEditVM)
         {
-            var response = new ServiceResponse<TrackerVM>();
+
+            var response = new ServiceResponse<EditTrackerVM>();
+
             if (spartan == null)
             {
                 response.Success = false;
-                response.Message = "No spartan found";
+                response.Message = "No user found";
                 return response;
             }
 
             var spartanOwnerId = await GetSpartanOwnerAsync(id);
-            if (id != trackerVM.Id)
+            if (id != trackerEditVM.Id)
             {
                 response.Message = "Error updating";
                 response.Success = false;
                 return response;
             }
 
-            var tracker = _mapper.Map<Tracker>(trackerVM);
-            tracker.SpartanId = spartanOwnerId;
-            _context.Update(tracker);
+            var trackerToDo = _mapper.Map<Tracker>(trackerEditVM);
+            //trackerToDo.Owner = spartan.UserName;
+            _context.Update(trackerToDo);
+            trackerToDo.SpartanId = spartan.Id;
             await _context.SaveChangesAsync();
             return response;
         }
 
-        public async Task<ServiceResponse<TrackerVM>> GetDetailsAsync(Spartan? spartan, int? id, string role)
+        public async Task<ServiceResponse<DetailsTrackerVM>> GetDetailsAsync(Spartan? spartan, int? id, string role)
         {
-            var response = new ServiceResponse<TrackerVM>();
+            var response = new ServiceResponse<DetailsTrackerVM>();
             if (id == null || _context.TrackerItems == null)
             {
                 response.Success = false;
-                response.Message = "ID or context not found.";
                 return response;
             }
+
             if (spartan == null)
             {
                 response.Success = false;
                 response.Message = "No user found";
                 return response;
             }
-            var tracker = await _context.TrackerItems.FirstOrDefaultAsync(t => t.Id == id);
-            if (role == "Trainee" && (tracker == null || tracker.SpartanId != spartan.Id))
+
+            var trackerToDo = await _context.TrackerItems
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (role == "Trainer")
             {
-                response.Success = false;
-                response.Message = "ID null or mismatch.";
+                response.Data = _mapper.Map<DetailsTrackerVM>(trackerToDo);
                 return response;
             }
-            response.Data = _mapper.Map<TrackerVM>(tracker);
+
+            if (trackerToDo == null || (trackerToDo.SpartanId != spartan.Id))
+            {
+                response.Success = false;
+                return response;
+            }
+
+            response.Data = _mapper.Map<DetailsTrackerVM>(trackerToDo);
             return response;
 
         }
 
-        public async Task<ServiceResponse<IEnumerable<TrackerVM>>> GetTrackersAsync(Spartan? spartan, string role = "Trainee", string? filter = null)
+        public async Task<ServiceResponse<EditTrackerVM>> GetEditDetailsAsync(Spartan? spartan, int? id)
+        {
+            var response = new ServiceResponse<EditTrackerVM>();
+            if (id == null || _context.TrackerItems == null)
+            {
+                response.Success = false;
+                return response;
+            }
+
+            if (spartan == null)
+            {
+                response.Success = false;
+                response.Message = "No user found";
+                return response;
+            }
+
+            var trackerToDo = await _context.TrackerItems
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (trackerToDo == null || (trackerToDo.SpartanId != spartan.Id))
+            {
+                response.Success = false;
+                return response;
+            }
+
+            response.Data = _mapper.Map<EditTrackerVM>(trackerToDo);
+            return response;
+
+        }
+
+        public string GetRole(HttpContext httpContext)
+        {
+            return httpContext.User.IsInRole("Trainee") ? "Trainee" : "Trainer";
+        }
+
+        public async Task<string> GetSpartanOwnerAsync(int? id)
+        {
+            return await _context.TrackerItems.Where(td => td.Id == id).Select(td => td.SpartanId).FirstAsync();
+        }
+
+        public async Task<ServiceResponse<IEnumerable<TrackerVM>>> GetTrackerEntriesAsync(Spartan? spartan, string role, string filter)
         {
             var response = new ServiceResponse<IEnumerable<TrackerVM>>();
             if (spartan == null)
@@ -138,97 +192,101 @@ namespace TraineeTracker.App.Services
             if (_context.TrackerItems == null)
             {
                 response.Success = false;
-                response.Message = "There no Tracker Items.";
+                response.Message = "There are no tracker entries to do!";
                 return response;
             }
 
-            List<Tracker> trackerItems = new List<Tracker>();
+            List<Tracker> trackers = new List<Tracker>();
+
             if (role == "Trainee")
             {
-                trackerItems = await _context.TrackerItems.Where(t => t.SpartanId == spartan.Id).ToListAsync();
+                // if the role is trainee
+                // get the todo itemers
+                // where the SpartanId of that todo item = the Id of the spartan
+                trackers = await _context.TrackerItems.Where(td => td.SpartanId == spartan.Id).ToListAsync();
             }
-            if (role == "Trainer" || role == "Admin")
+            if (role == "Trainer")
             {
-                trackerItems = await _context.TrackerItems.Include(s => s.Spartan).ToListAsync();
+                // Trainer can see all the to dos!!
+                trackers = await _context.TrackerItems.ToListAsync();
             }
+
             if (string.IsNullOrEmpty(filter))
             {
-                response.Data = trackerItems.Select(t => _mapper.Map<TrackerVM>(t));
+                response.Data = trackers.Select(td => _mapper.Map<TrackerVM>(td));
                 return response;
-            }
-            response.Data = trackerItems
-                .Where(t => (t.Title.Contains(filter!, StringComparison.OrdinalIgnoreCase)) ||
-                (t.Spartan.UserName.Contains(filter!, StringComparison.OrdinalIgnoreCase)))
-            .Select(t => _mapper.Map<TrackerVM>(t));
-            return response;
+            };
 
+            //trackers = await _context.TrackerEntries.Where(td => td.SpartanId == spartan.Id).ToListAsync();
+/*            response.Data = trackers
+                .Where(td =>
+                    td.Owner.Contains(filter!, StringComparison.OrdinalIgnoreCase)) *//*||
+                    td.SoftSkill.Contains(filter!, StringComparison.OrdinalIgnoreCase) ||
+					td.TechnicalSkill.Contains(filter!, StringComparison.OrdinalIgnoreCase))*//*
+                .Select(t => _mapper.Map<TrackerVM>(t));*/
+
+
+
+            return response;
         }
 
         public async Task<ServiceResponse<Spartan>> GetUserAsync(HttpContext httpContext)
         {
             var response = new ServiceResponse<Spartan>();
+
             var currentUser = await _userManager.GetUserAsync(httpContext.User);
+
             if (currentUser == null)
             {
                 response.Success = false;
                 response.Message = "Could not find Spartan";
                 return response;
             }
+
             response.Data = currentUser;
             return response;
         }
 
-        public bool TrackerExists(int id)
+        public bool TrackerEntriesExists(int id)
         {
             return (_context.TrackerItems?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        public async Task<ServiceResponse<TrackerVM>> UpdateTrackerReviewedAsync(Spartan? spartan, int? id, MarkReviewedVM markReviewedVM)
+        public async Task<ServiceResponse<TrackerVM>> UpdateTrackerEntriesCompleteAsync(Spartan? spartan, int id, MarkReviewedVM markCompleteVM, string role = "Trainee")
         {
             var response = new ServiceResponse<TrackerVM>();
             if (spartan == null)
             {
                 response.Success = false;
-                response.Message = "No spartan found";
+                response.Message = "No user found";
                 return response;
             }
-            if (id != markReviewedVM.Id)
+            if (id != markCompleteVM.Id)
             {
                 response.Success = false;
                 response.Message = "Model error";
                 return response;
             }
-            var tracker = await _context.TrackerItems.FindAsync(id);
-            if (tracker == null)
+            if (role == "Trainee")
             {
-                response.Success = false;
-                response.Message = "Cannot find ToDo item";
+                response.Success = true;
                 return response;
             }
-            tracker.IsReviewed = markReviewedVM.IsReviewed;
+
+            var trackerToDo = await _context.TrackerItems.FindAsync(id);
+
+            if (trackerToDo == null)
+            {
+                response.Success = false;
+                response.Message = "Cannot find tracker entry";
+                return response;
+            }
+
+            trackerToDo.IsReviewed = markCompleteVM.IsReviewed;
 
             await _context.SaveChangesAsync();
             return response;
         }
 
-        public async Task<string> GetSpartanOwnerAsync(int? id)
-        {
-            return await _context.TrackerItems.Where(td => td.Id == id).Select(td => td.SpartanId).FirstAsync();
-        }
-
-        public string GetRole(HttpContext httpContext)
-        {
-            if (httpContext.User.IsInRole("Admin"))
-            {
-                return "Admin";
-            } else if (httpContext.User.IsInRole("Trainer"))
-            {
-                return "Trainer";
-            }
-            else
-            {
-                return "Trainee";
-            }
-        }
     }
 }

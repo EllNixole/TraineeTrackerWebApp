@@ -21,7 +21,7 @@ namespace TraineeTracker.App.Controllers
         public async Task<IActionResult> Index(string? filter = null)
         {
             var user = await _service.GetUserAsync(HttpContext);
-            var response = await _service.GetTrackersAsync(user.Data, _service.GetRole(HttpContext), filter);
+            var response = await _service.GetTrackerEntriesAsync(user.Data, _service.GetRole(HttpContext), filter);
             return response.Success ? View(response.Data) : Problem(response.Message);
         }
 
@@ -50,7 +50,7 @@ namespace TraineeTracker.App.Controllers
         public async Task<IActionResult> Create(CreateTrackerVM createTrackerVM)
         {
             var user = await _service.GetUserAsync(HttpContext);
-            var response = await _service.CreateTrackerAsync(user.Data, createTrackerVM);
+            var response = await _service.CreateTrackerEntriesAsync(user.Data, createTrackerVM);
             return response.Success ? RedirectToAction(nameof(Index)) : View(createTrackerVM);
         }
 
@@ -59,7 +59,7 @@ namespace TraineeTracker.App.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             var user = await _service.GetUserAsync(HttpContext);
-            var response = await _service.GetDetailsAsync(user.Data, id, _service.GetRole(HttpContext));
+            var response = await _service.GetEditDetailsAsync(user.Data, id);
             return response.Success ? View(response.Data) : Problem(response.Message);
         }
 
@@ -69,10 +69,10 @@ namespace TraineeTracker.App.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Trainee, Admin")]
-        public async Task<IActionResult> Edit(int id, TrackerVM trackerVM)
+        public async Task<IActionResult> Edit(int id, EditTrackerVM editTrackerVM)
         {
             var user = await _service.GetUserAsync(HttpContext);
-            var response = await _service.EditTrackerAsync(user.Data, id, trackerVM);
+            var response = await _service.EditTrackerEntriesAsync(user.Data, id, editTrackerVM);
             return response.Success ? RedirectToAction(nameof(Index)) : NotFound();
         }
 
@@ -83,7 +83,7 @@ namespace TraineeTracker.App.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var user = await _service.GetUserAsync(HttpContext);
-            var response = await _service.DeleteTrackerAsync(user.Data, id);
+            var response = await _service.DeleteTrackerEntriesAsync(user.Data, id);
             return response.Success ? RedirectToAction(nameof(Index)) : Problem(response.Message);
         }
 
@@ -91,7 +91,7 @@ namespace TraineeTracker.App.Controllers
         public async Task<IActionResult> UpdateTrackerReviewed(int id, MarkReviewedVM markReviewedVM)
         {
             var user = await _service.GetUserAsync(HttpContext);
-            var response = await _service.UpdateTrackerReviewedAsync(user.Data, id, markReviewedVM);
+            var response = await _service.UpdateTrackerEntriesCompleteAsync(user.Data, id, markReviewedVM);
             return response.Success ? RedirectToAction(nameof(Index)) : Problem(response.Message);
         }
     }
