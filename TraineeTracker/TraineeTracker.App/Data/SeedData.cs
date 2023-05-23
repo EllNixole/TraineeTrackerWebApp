@@ -115,7 +115,9 @@ namespace TraineeTracker.App.Data
                     StopDoingText = "Stop it",
                     ContinueDoingText = "Continue it",
                     IsReviewed = false,
-                    Spartan = peter
+                    Spartan = peter,
+                    PercentGrade = 0,
+                    Course = "C#"
                 },
                 new Tracker
                 {
@@ -124,7 +126,9 @@ namespace TraineeTracker.App.Data
                     StopDoingText = "Goodbye",
                     ContinueDoingText = "...",
                     IsReviewed = true,
-                    Spartan = peter
+                    Spartan = peter,
+                    PercentGrade = 0,
+                    Course = "C#"
                 },
                 new Tracker
                 {
@@ -133,7 +137,9 @@ namespace TraineeTracker.App.Data
                     StopDoingText = "Working",
                     ContinueDoingText = "Doing well",
                     IsReviewed = true,
-                    Spartan = peter
+                    Spartan = peter,
+                    PercentGrade = 0,
+                    Course = "C#"
                 },
                 new Tracker
                 {
@@ -142,7 +148,9 @@ namespace TraineeTracker.App.Data
                     StopDoingText = "Stop",
                     ContinueDoingText = "Continue",
                     IsReviewed = false,
-                    Spartan = peter
+                    Spartan = peter,
+                    PercentGrade = 0,
+                    Course = "C#"
                 },
                 new Tracker
                 {
@@ -151,7 +159,9 @@ namespace TraineeTracker.App.Data
                     StopDoingText = "it",
                     ContinueDoingText = "it",
                     IsReviewed = false,
-                    Spartan = peter
+                    Spartan = peter,
+                    PercentGrade = 0,
+                    Course = "C#"
                 }
             );
             context.SaveChanges();

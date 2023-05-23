@@ -13,6 +13,7 @@ namespace TraineeTracker.App.Models
 
         [StringLength(50)]
         [Required(ErrorMessage = "Title is required")]
+        [DisplayName("Week")]
         public string Title { get; set; } = null!;
 
         [StringLength(500)]
@@ -44,6 +45,11 @@ namespace TraineeTracker.App.Models
         [ForeignKey("Spartan")]
         public string SpartanId { get; set; } = null!;
 
+		[DisplayName("Grade")]
+        [Range(0,100)]
+		public int PercentGrade { get; set; } = 0;
 
+		[StringLength(500)]
+		public string Course { get; set; } = null!;
     }
 }
