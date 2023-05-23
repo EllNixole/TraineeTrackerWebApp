@@ -18,45 +18,39 @@
     </p>
 </form>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             @{
                 if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
                 {
-                        <th>
-                        @Html.DisplayNameFor(model => model.Spartan.UserName)
-                        </th>
+                    <th>
+                        User
+                    </th>
                 }
             }
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsReviewed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TechnicalSkill)
+                @Html.DisplayNameFor(model => model.Course)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SpartanSkill)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
+                @Html.DisplayNameFor(model => model.TechnicalSkill)
             </th>
-            
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.PercentGrade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsReviewed)
+            </th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-
-            var startText = Utilities.DisplayText(item.StartDoingText, 50);
-            var stopText = Utilities.DisplayText(item.StopDoingText, 50);
-            var contText = Utilities.DisplayText(item.ContinueDoingText, 50);
         <tr>
             @{
                 if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
@@ -70,29 +64,21 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                <div id="TextFields">
-                    <table>
-							<tbody>
-								<tr><td><strong>@Html.DisplayNameFor(modelItem=>item.StartDoingText):</strong> @Html.DisplayFor(modelItem => startText)</td></tr>
-                                <tr><td><strong>@Html.DisplayNameFor(modelItem=>item.StopDoingText):</strong> @Html.DisplayFor(modelItem => stopText)</td></tr>
-                                <tr><td><strong>@Html.DisplayNameFor(modelItem=>item.ContinueDoingText):</strong> @Html.DisplayFor(modelItem => contText)</td></tr>
-							</tbody>
-                    </table>
-                </div>
-            </td>
-            <td>
-                <form asp-action="UpdateTrackerReviewed" asp-route-id="@item.Id">
-                   @Html.CheckBox("IsReviewed", item.IsReviewed, new {onChange="this.form.submit()"})
-                </form>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TechnicalSkill)
+                @Html.DisplayFor(modelItem => item.Course)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SpartanSkill)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
+                @Html.DisplayFor(modelItem => item.TechnicalSkill)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PercentGrade)
+            </td>
+            <td>
+                <form asp-action="UpdateTrackerReviewed" asp-route-id="@item.Id">
+                    @Html.CheckBox("IsReviewed", item.IsReviewed, new {onChange="this.form.submit()"})
+                </form>
             </td>
             <td class="btn-group-vertical">
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>

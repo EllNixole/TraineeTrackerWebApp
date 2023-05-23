@@ -13,6 +13,7 @@ namespace TraineeTracker.App.Models.ViewModels
 
         [StringLength(50)]
         [Required(ErrorMessage = "Title is required")]
+        [DisplayName("Week")]
         public string Title { get; set; } = null!;
 
         [StringLength(500)]
@@ -35,5 +36,12 @@ namespace TraineeTracker.App.Models.ViewModels
         public DateTime DateCreated { get; init; } = DateTime.Now;
 
         public Spartan? Spartan { get; set; }
-    }
+
+		[DisplayName("Grade")]
+		[Range(0, 100)]
+		public int PercentGrade { get; set; } = 0;
+
+		[StringLength(500)]
+		public string Course { get; set; } = null!;
+	}
 }
