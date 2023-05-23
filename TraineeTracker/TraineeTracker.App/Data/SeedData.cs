@@ -55,19 +55,19 @@ namespace TraineeTracker.App.Data
 
             var phil = new Spartan
             {
-                UserName = "Phil@spartaglobal.com",
+                UserName = "Phil",
                 Email = "Phil@spartaglobal.com",
                 EmailConfirmed = true
             };
             var nish = new Spartan
             {
-                UserName = "Nish@spartaglobal.com",
+                UserName = "Nish",
                 Email = "Nish@spartaglobal.com",
                 EmailConfirmed = true,
             };
             var peter = new Spartan
             {
-                UserName = "Peter@spartaglobal.com",
+                UserName = "Peter",
                 Email = "Peter@spartaglobal.com",
                 EmailConfirmed = true
             };
@@ -110,12 +110,12 @@ namespace TraineeTracker.App.Data
             context.TrackerItems.AddRange(
                 new Tracker
                 {
-                    Title = "Week 1",
+                    Title = "Week 2",
                     StartDoingText = "Start it",
                     StopDoingText = "Stop it",
                     ContinueDoingText = "Continue it",
                     IsReviewed = false,
-                    Spartan = nish
+                    Spartan = peter
                 },
                 new Tracker
                 {
@@ -137,12 +137,12 @@ namespace TraineeTracker.App.Data
                 },
                 new Tracker
                 {
-                    Title = "Week 10",
+                    Title = "Week 5",
                     StartDoingText = "start",
                     StopDoingText = "Stop",
                     ContinueDoingText = "Continue",
                     IsReviewed = false,
-                    Spartan = nish
+                    Spartan = peter
                 },
                 new Tracker
                 {
