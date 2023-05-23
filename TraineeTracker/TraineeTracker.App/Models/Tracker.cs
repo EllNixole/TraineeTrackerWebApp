@@ -7,7 +7,6 @@ namespace TraineeTracker.App.Models
 {
     public class Tracker
     {
-
         [Key]
         public int Id { get; set; }
 
@@ -50,6 +49,6 @@ namespace TraineeTracker.App.Models
 		public int PercentGrade { get; set; } = 0;
 
 		[StringLength(500)]
-		public string Course { get; set; } = null!;
+		public string? Course { get; set; } 
     }
 }

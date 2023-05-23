@@ -1,4 +1,4 @@
-﻿@model TraineeTracker.App.Models.ViewModels.TrackerVM
+﻿@model TraineeTracker.App.Models.ViewModels.EditTrackerVM
 
 @{
 	ViewData["Title"] = "Edit";
@@ -96,14 +96,11 @@
 				@Html.DropDownList("SpartanSkill", spartanSkills, new { @class = "form-control" })
 				<span asp-validation-for="SpartanSkill" class="text-danger"></span>
 			</div>
-			<div class="form-group">
-				<label asp-for="DateCreated" class="control-label"></label>
-				<input asp-for="DateCreated" class="form-control" readonly/>
-				<span asp-validation-for="DateCreated" class="text-danger"></span>
-			</div>
+			<br>
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-primary" />
 			</div>
+			<br>
 		</form>
 	</div>
 </div>
