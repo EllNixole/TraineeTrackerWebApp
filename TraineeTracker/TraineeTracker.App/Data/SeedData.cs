@@ -58,14 +58,14 @@ namespace TraineeTracker.App.Data
                 UserName = "Nish",
                 Email = "Nish@spartaglobal.com",
                 EmailConfirmed = true,
-                Role = "Trainer"
+                Role = "Admin"
             };
             var peter = new Spartan
             {
                 UserName = "Peter",
                 Email = "Peter@spartaglobal.com",
                 EmailConfirmed = true,
-                Role = "Trainee"
+                Role = "Trainer"
             };
             var matt = new Spartan
             {

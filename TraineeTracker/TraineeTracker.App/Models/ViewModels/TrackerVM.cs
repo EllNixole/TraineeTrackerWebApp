@@ -26,6 +26,6 @@ namespace TraineeTracker.App.Models.ViewModels
         [DisplayName("Reviewed")]
         public bool IsReviewed { get; set; }
 
-        public Spartan? Spartan { get; set; }
+        public SpartanDTO? Spartan { get; set; }
     }
 }
