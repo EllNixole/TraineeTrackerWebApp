@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TraineeTracker.App.Data;
@@ -30,21 +24,21 @@ namespace TraineeTracker.App.Controllers
         [HttpGet("trackers")]
         public async Task<ActionResult<IEnumerable<TrackerVM>>> GetTrackerItems()
         {
-          if (_context.TrackerItems == null)
-          {
-              return NotFound();
-          }
-          return await _context.TrackerItems.Include(t=>t.Spartan).Select(t=>_mapper.Map<TrackerVM>(t)).ToListAsync();
+            if (_context.TrackerItems == null)
+            {
+                return NotFound();
+            }
+            return await _context.TrackerItems.Include(t => t.Spartan).Select(t => _mapper.Map<TrackerVM>(t)).ToListAsync();
         }
 
         // GET: api/TrackersAPI/5
         [HttpGet("trackers/{id}")]
         public async Task<ActionResult<Tracker>> GetTracker(int id)
         {
-          if (_context.TrackerItems == null)
-          {
-              return NotFound();
-          }
+            if (_context.TrackerItems == null)
+            {
+                return NotFound();
+            }
             var tracker = await _context.TrackerItems.FindAsync(id);
 
             if (tracker == null)
@@ -74,7 +68,7 @@ namespace TraineeTracker.App.Controllers
             {
                 return NotFound();
             }
-            return await _context.Spartans.Where(t=>t.Role == "Trainee").Select(td => _mapper.Map<SpartanDTO>(td)).ToListAsync();
+            return await _context.Spartans.Where(t => t.Role == "Trainee").Select(td => _mapper.Map<SpartanDTO>(td)).ToListAsync();
         }
         // GET: api/trainees/?C#
         [HttpGet("trainees/bycourse")]
@@ -123,10 +117,10 @@ namespace TraineeTracker.App.Controllers
         [NonAction]
         public async Task<ActionResult<Tracker>> PostTracker(Tracker tracker)
         {
-          if (_context.TrackerItems == null)
-          {
-              return Problem("Entity set 'TraineeTrackerContext.TrackerItems'  is null.");
-          }
+            if (_context.TrackerItems == null)
+            {
+                return Problem("Entity set 'TraineeTrackerContext.TrackerItems'  is null.");
+            }
             _context.TrackerItems.Add(tracker);
             await _context.SaveChangesAsync();
 

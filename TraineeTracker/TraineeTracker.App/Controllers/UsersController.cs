@@ -4,12 +4,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Versioning;
 using System.Data;
 using TraineeTracker.App.Data;
 using TraineeTracker.App.Models;
-using TraineeTracker.App.Models.ViewModels;
-using TraineeTracker.App.Services;
 
 namespace TraineeTracker.App.Controllers
 {
