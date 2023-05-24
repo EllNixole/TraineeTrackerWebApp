@@ -41,7 +41,7 @@
                     if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
                     {
                         <td>
-                            <asp:HyperLink class="UserNameLink" runat="server" NavigateUrl="~/Trackers/@Html.DisplayFor(modelitem => item.Spartan.Id)">@Html.DisplayFor(modelitem => item.Spartan.UserName)</asp:HyperLink>
+                            <a class="nav-link" asp-area="" asp-controller="Trackers" asp-action="Index">@Html.DisplayFor(modelitem => item.Spartan.UserName)</a>
                         </td>
                     }
                 }
