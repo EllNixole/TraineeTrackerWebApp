@@ -65,32 +65,35 @@ namespace TraineeTracker.App.Data
                 UserName = "Peter",
                 Email = "Peter@spartaglobal.com",
                 EmailConfirmed = true,
-                Course = "C#",
                 Role = "Trainee"
             };
             var matt = new Spartan
             {
                 UserName = "Matt",
                 Email = "Matt@spartaglobal.com",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Course = "C-Blunt"
             };
             var danielle = new Spartan
             {
                 UserName = "Danielle",
                 Email = "Danielle@spartaglobal.com",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Course = "Java"
             };
             var jacob = new Spartan
             {
                 UserName = "Jacob",
                 Email = "Jacob@spartaglobal.com",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Course = "C#"
             };
             var danyal = new Spartan
             {
                 UserName = "Danyal",
                 Email = "Danyal@spartaglobal.com",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Course = "C#"
             };
 
             userManager
@@ -164,8 +167,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "Continue it",
                     IsReviewed = false,
                     Spartan = matt,
-                    PercentGrade = 75,
-                    Course = "C#",
+                    PercentGrade = 75
                 },
                 new Tracker
                 {
@@ -175,8 +177,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "...",
                     IsReviewed = true,
                     Spartan = matt,
-                    PercentGrade = 80,
-                    Course = "C#"
+                    PercentGrade = 80
                 },
                 new Tracker
                 {
@@ -186,8 +187,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "Doing well",
                     IsReviewed = true,
                     Spartan = danielle,
-                    PercentGrade = 75,
-                    Course = "C#"
+                    PercentGrade = 75
                 },
                 new Tracker
                 {
@@ -197,8 +197,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "Continue",
                     IsReviewed = false,
                     Spartan = danielle,
-                    PercentGrade = 80,
-                    Course = "C#"
+                    PercentGrade = 80
                 },
                 new Tracker
                 {
@@ -208,8 +207,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "Doing well",
                     IsReviewed = true,
                     Spartan = jacob,
-                    PercentGrade = 75,
-                    Course = "C#"
+                    PercentGrade = 75
                 },
                 new Tracker
                 {
@@ -219,8 +217,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "Continue",
                     IsReviewed = false,
                     Spartan = jacob,
-                    PercentGrade = 80,
-                    Course = "C#"
+                    PercentGrade = 80
                 },
                 new Tracker
                 {
@@ -230,8 +227,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "Continue",
                     IsReviewed = false,
                     Spartan = jacob,
-                    PercentGrade = 69,
-                    Course = "C#"
+                    PercentGrade = 69
                 },
                 new Tracker
                 {
@@ -241,8 +237,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "Continue",
                     IsReviewed = false,
                     Spartan = danyal,
-                    PercentGrade = 80,
-                    Course = "C#"
+                    PercentGrade = 80
                 },
                 new Tracker
                 {
@@ -252,8 +247,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "Continue",
                     IsReviewed = false,
                     Spartan = danyal,
-                    PercentGrade = 75,
-                    Course = "C#"
+                    PercentGrade = 75
                 },
                 new Tracker
                 {
@@ -263,8 +257,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "Continue",
                     IsReviewed = false,
                     Spartan = danyal,
-                    PercentGrade = 80,
-                    Course = "C#"
+                    PercentGrade = 80
                 }
             );
             context.SaveChanges();
