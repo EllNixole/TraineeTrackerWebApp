@@ -255,7 +255,7 @@ namespace TraineeTracker.App.Services
                 // if the role is trainee
                 // get the todo itemers
                 // where the SpartanId of that todo item = the Id of the spartan
-                trackers = await _context.TrackerItems.ToListAsync();
+                trackers = await _context.TrackerItems.Include(t => t.Spartan).ToListAsync();
 
             if (string.IsNullOrEmpty(filter))
             {
