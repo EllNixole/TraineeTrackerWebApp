@@ -18,9 +18,22 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Trackers" asp-action="Index">Trainee Tracker</a>
-                        </li>
+                        @{
+                            if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Trackers" asp-action="Academy">Academy</a>
+                                </li>
+                            }
+                        }
+                        @{
+                            if (this.User.IsInRole("Trainee"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Trackers" asp-action="Index">Trainee Tracker</a>
+                                </li>
+                            }
+                        }
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">Admin</a>
                         </li>
