@@ -36,6 +36,11 @@ namespace TraineeTracker.App.Controllers
         public async Task<IActionResult> Index(string userName,string? filter = null)
         {
             var user = await _service.GetUserAsync(HttpContext);
+            if (_service.GetRole(HttpContext) == "Trainee")
+            {
+                var traineeResponse = await _service.GetTrackerEntriesAsync(user.Data, _service.GetRole(HttpContext), filter);
+                return traineeResponse.Success ? View(traineeResponse.Data) : Problem(traineeResponse.Message);
+            }
             var response = await _service.GetTrackerEntryAcademyAsync(user.Data, _service.GetRole(HttpContext), userName);
             return response.Success ? View(response.Data) : Problem(response.Message);
         }
