@@ -1,7 +1,6 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 using TraineeTracker.App.Models.ViewModels;
 using TraineeTracker.App.Services;
 

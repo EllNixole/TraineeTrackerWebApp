@@ -22,10 +22,9 @@ namespace TraineeTracker.App.Models.ViewModels
 		[Range(0, 100)]
 		public int PercentGrade { get; set; }
 
-
         [DisplayName("Reviewed")]
         public bool IsReviewed { get; set; }
 
-        public Spartan? Spartan { get; set; }
+        public SpartanDTO? Spartan { get; set; }
     }
 }
