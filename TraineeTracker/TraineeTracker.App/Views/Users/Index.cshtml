@@ -1,0 +1,56 @@
+﻿@using TraineeTracker.App.Models.ViewModels;
+@model List<SpartanRoleVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Spartans</h1>
+
+<p>
+    
+</p>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                Role
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{var count = 0;
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Roles)
+                </td>
+                    <td class="btn-group-vertical">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                        <a class="btn btn-danger">
+                            @using (Html.BeginForm("Delete", "Trackers", new { id = item.Id }))
+                            {
+                                <input type="submit" class="bg-transparent border-0" value="Delete" onclick="return confirm('Are you sure you wish to delete the user: @item.Username?')" />
+                            }
+                        </a>
+                    </td>
+            </tr>
+            count++;
+        }
+        }
+
+    </tbody>
+</table>
