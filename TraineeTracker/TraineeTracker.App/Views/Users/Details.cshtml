@@ -7,7 +7,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Tracker</h4>
+    <h4>User</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -21,6 +21,18 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Role)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Course)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Course)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Stream)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Stream)
         </dd>
         
     </dl>

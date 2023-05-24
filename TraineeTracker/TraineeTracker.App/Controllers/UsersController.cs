@@ -29,23 +29,7 @@ namespace TraineeTracker.App.Controllers
         public async Task<IActionResult> Index()
         {
             var spartans = _userManager.Users.ToList();
-            var userList = new List<SpartanRoleVM>();
-
-            foreach (var user in spartans)
-            {
-                var id = user.Id;
-                var username = user.UserName;
-                var roles = await _userManager.GetRolesAsync(user);
-                var spartanAndRole = new SpartanRoleVM
-                {
-                    Id = id,
-                    Username = username,
-                    Roles = roles.ToList()
-                };
-
-                userList.Add(spartanAndRole);
-            }
-            return View(userList);
+            return View(spartans);
             
         }
 
@@ -54,7 +38,6 @@ namespace TraineeTracker.App.Controllers
         public async Task<IActionResult> Details(string? id)
         {
             var spartan = _userManager.Users.Where(s => s.Id == id).FirstOrDefault();
-            var spartanRoleVM = _mapper.Map<SpartanRoleVM>(spartan);
             return View(spartan);
         }
 
@@ -71,16 +54,25 @@ namespace TraineeTracker.App.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create(SpartanRoleVM spartanRoleVM)
+        public async Task<IActionResult> Create(Spartan spartan)
         {
             return View();
         }
 
         // GET: Trackers/Edit/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
-            return View();
+            var spartan = await _userManager.FindByIdAsync(id);
+
+            if(spartan == null)
+            {
+                return Problem();
+            }
+            else
+            {
+                return View(spartan);
+            }
         }
 
         // POST: Trackers/Edit/5
@@ -89,13 +81,17 @@ namespace TraineeTracker.App.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, SpartanVM spartanVM)
+        public async Task<IActionResult> Edit(string id, Spartan spartan)
         {
-			var user = _userManager.Users.Where(u => u.Id == spartanVM.Id).FirstOrDefault();
-            var updatedSpartan = _mapper.Map<Spartan>(spartanVM);
-
-            await _userManager.UpdateAsync(updatedSpartan);
-            
+            var user = await _userManager.FindByIdAsync(id);
+            user.UserName = spartan.UserName;
+            await _userManager.RemoveFromRoleAsync(user, user.Role);
+            await _userManager.AddToRoleAsync(user, spartan.Role);
+            user.Role = spartan.Role;
+            user.Course = spartan.Course;
+            user.Stream = spartan.Stream;
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction(nameof(Index));
 		}
 
         // POST: Trackers/Delete/5
@@ -104,7 +100,7 @@ namespace TraineeTracker.App.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
-			var user = _userManager.Users.Where(u => u.Id == id).FirstOrDefault();
+            var user = await _userManager.FindByIdAsync(id);
             await _userManager.DeleteAsync(user);
             return RedirectToAction(nameof(Index));
         }
