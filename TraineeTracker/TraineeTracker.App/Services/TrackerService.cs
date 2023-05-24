@@ -254,7 +254,7 @@ namespace TraineeTracker.App.Services
                 // if the role is trainee
                 // get the todo itemers
                 // where the SpartanId of that todo item = the Id of the spartan
-                spartans = await _context.Spartans.Where(s => s.Role == "Trainee").ToListAsync();
+                spartans = await _context.Spartans.Where(s => s.Role == "Trainee").OrderBy(s => s.UserName).ToListAsync();
 
             if (string.IsNullOrEmpty(filter))
             {
