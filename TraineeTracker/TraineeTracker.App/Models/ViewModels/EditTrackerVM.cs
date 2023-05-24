@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TraineeTracker.App.Models.ViewModels
 {
@@ -22,7 +23,7 @@ namespace TraineeTracker.App.Models.ViewModels
         [Range(0, 100)]
         public int PercentGrade { get; set; } = 0;
 
-        [DisplayName("Reviewed")]
+        [HiddenInput(DisplayValue = false)]
         public bool IsReviewed { get; set; }
 
         [StringLength(500)]

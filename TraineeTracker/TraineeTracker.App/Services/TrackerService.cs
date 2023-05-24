@@ -311,9 +311,35 @@ namespace TraineeTracker.App.Services
                 response.Message = "Model error";
                 return response;
             }
-            if (role == "Trainee")
+
+            var trackerToDo = await _context.TrackerItems.FindAsync(id);
+
+            if (trackerToDo == null)
             {
-                response.Success = true;
+                response.Success = false;
+                response.Message = "Cannot find tracker entry";
+                return response;
+            }
+
+            trackerToDo.IsReviewed = markCompleteVM.IsReviewed;
+
+            await _context.SaveChangesAsync();
+            return response;
+        }
+
+        public async Task<ServiceResponse<TrackerVM>> UpdateTrackerEntriesGradeAsync(Spartan? spartan, int id, TrackerVM trackerVM, int grade)
+        {
+            var response = new ServiceResponse<TrackerVM>();
+            if (spartan == null)
+            {
+                response.Success = false;
+                response.Message = "No user found";
+                return response;
+            }
+            if (id != trackerVM.Id)
+            {
+                response.Success = false;
+                response.Message = "Model error";
                 return response;
             }
 
@@ -326,7 +352,7 @@ namespace TraineeTracker.App.Services
                 return response;
             }
 
-            trackerToDo.IsReviewed = markCompleteVM.IsReviewed;
+            trackerToDo.PercentGrade = grade;
 
             await _context.SaveChangesAsync();
             return response;
