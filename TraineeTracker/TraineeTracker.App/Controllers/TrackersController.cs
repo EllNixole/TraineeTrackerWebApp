@@ -18,18 +18,25 @@ namespace TraineeTracker.App.Controllers
         }
 
         // GET: Trackers
-        [Authorize(Roles = "Trainee, Trainer, Admin")]
+        /*[Authorize(Roles = "Trainee, Trainer, Admin")]
         public async Task<IActionResult> Index(string? filter = null)
         {
             var user = await _service.GetUserAsync(HttpContext);
             var response = await _service.GetTrackerEntriesAsync(user.Data, _service.GetRole(HttpContext), filter);
             return response.Success ? View(response.Data) : Problem(response.Message);
-        }
+        }*/
 
         public async Task<IActionResult> Academy(string? filter = null)
         {
             var user = await _service.GetUserAsync(HttpContext);
             var response = await _service.GetTrackerEntriesAcademyAsync(user.Data, _service.GetRole(HttpContext), filter);
+            return response.Success ? View(response.Data) : Problem(response.Message);
+        }
+        [Authorize(Roles = "Trainee, Trainer, Admin")]
+        public async Task<IActionResult> Index(string userName,string? filter = null)
+        {
+            var user = await _service.GetUserAsync(HttpContext);
+            var response = await _service.GetTrackerEntryAcademyAsync(user.Data, _service.GetRole(HttpContext), userName);
             return response.Success ? View(response.Data) : Problem(response.Message);
         }
 

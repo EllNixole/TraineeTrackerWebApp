@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TraineeTracker.App.Models.ViewModels.TrackerAcademyVM>
+﻿@model IEnumerable<TraineeTracker.App.Models.ViewModels.SpartanDTO>
 
 @{
     ViewData["Title"] = "View";
@@ -6,7 +6,7 @@
 
 <h1>View</h1>
 
-<form asp-controller="Trackers" asp-action="Index" method="get">
+<form asp-controller="Trackers" asp-action="Academy" method="get">
     <p>
         <label for="filter">Filter by: </label>
         <input type="text" id="filter" name="filter" />
@@ -41,7 +41,7 @@
                     if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
                     {
                         <td>
-                            <a class="nav-link" asp-area="" asp-controller="Trackers" asp-action="Index">@Html.DisplayFor(modelitem => item.Spartan.UserName)</a>
+                            <a class="nav-link" asp-area="" asp-action="Index" asp-route-userName="@item.UserName">@Html.DisplayFor(modelitem => item.UserName)</a>
                         </td>
                     }
                 }
@@ -49,7 +49,7 @@
                     @Html.DisplayFor(modelItem => item.Stream)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Spartan.Course)
+                    @Html.DisplayFor(modelItem => item.Course)
                 </td>
             </tr>
         }
