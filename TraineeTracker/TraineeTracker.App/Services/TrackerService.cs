@@ -121,6 +121,7 @@ namespace TraineeTracker.App.Services
             }
 
             var trackerToDo = await _context.TrackerItems
+                .Include(t => t.Spartan)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (role == "Trainer")
@@ -157,6 +158,7 @@ namespace TraineeTracker.App.Services
             }
 
             var trackerToDo = await _context.TrackerItems
+                .Include(t => t.Spartan)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (trackerToDo == null || (trackerToDo.SpartanId != spartan.Id))
@@ -203,12 +205,12 @@ namespace TraineeTracker.App.Services
                 // if the role is trainee
                 // get the todo itemers
                 // where the SpartanId of that todo item = the Id of the spartan
-                trackers = await _context.TrackerItems.Where(td => td.SpartanId == spartan.Id).ToListAsync();
+                trackers = await _context.TrackerItems.Include(t => t.Spartan).Where(td => td.SpartanId == spartan.Id).ToListAsync();
             }
             if (role == "Trainer")
             {
                 // Trainer can see all the to dos!!
-                trackers = await _context.TrackerItems.ToListAsync();
+                trackers = await _context.TrackerItems.Include(t => t.Spartan).ToListAsync();
             }
 
             if (string.IsNullOrEmpty(filter))
