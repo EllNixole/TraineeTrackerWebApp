@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TraineeTracker.App.Models.ViewModels
 {
@@ -25,7 +26,7 @@ namespace TraineeTracker.App.Models.ViewModels
         [StringLength(500)]
         public string? Course { get; set; }
 
-        [DisplayName("Reviewed")]
+        [HiddenInput(DisplayValue = false)]
         public bool IsReviewed { get; set; }
 
         [StringLength(500)]

@@ -20,7 +20,7 @@ namespace TraineeTracker.App.Models.ViewModels
 
 		[DisplayName("Grade")]
 		[Range(0, 100)]
-		public int PercentGrade { get; set; } = 0;
+		public int PercentGrade { get; set; }
 
 		[StringLength(500)]
 		public string? Course { get; set; }

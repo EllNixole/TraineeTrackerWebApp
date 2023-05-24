@@ -33,11 +33,6 @@
 				<textarea maxlength="499" asp-for="ContinueDoingText" class="form-control rounded-0" rows="10"></textarea>
 				<span asp-validation-for="ContinueDoingText" class="text-danger"></span>
 			</div>
-			<div class="form-group form-check">
-				<label class="form-check-label">
-					<input class="form-check-input" asp-for="IsReviewed" /> @Html.DisplayNameFor(model => model.IsReviewed)
-				</label>
-			</div>
 			<div class="form-group">
 				<label asp-for="TechnicalSkill" class="control-label"></label>
 				@{
@@ -80,7 +75,6 @@
 					{
 						Text = "Partially Skilled",
 						Value = "Partially Skilled",
-						//Selected = true
 					});
 						spartanSkills.Add(new SelectListItem
 					{

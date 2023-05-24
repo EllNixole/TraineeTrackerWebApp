@@ -3,9 +3,12 @@ using System.ComponentModel;
 
 namespace TraineeTracker.App.Models.ViewModels
 {
-    public class MarkReviewedVM
+    public class TrackerGradeVM
     {
         public int Id { get; set; }
-        public bool IsReviewed { get; set; }
+
+        [DisplayName("Grade")]
+        [Range(0, 100)]
+        public int PercentGrade { get; set; } = 99;
     }
 }
