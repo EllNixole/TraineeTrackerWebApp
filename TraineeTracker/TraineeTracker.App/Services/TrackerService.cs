@@ -121,6 +121,7 @@ namespace TraineeTracker.App.Services
             }
 
             var trackerToDo = await _context.TrackerItems
+                .Include(t => t.Spartan)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (role == "Trainer")
@@ -157,6 +158,7 @@ namespace TraineeTracker.App.Services
             }
 
             var trackerToDo = await _context.TrackerItems
+                .Include(t => t.Spartan)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (trackerToDo == null || (trackerToDo.SpartanId != spartan.Id))
@@ -203,12 +205,12 @@ namespace TraineeTracker.App.Services
                 // if the role is trainee
                 // get the todo itemers
                 // where the SpartanId of that todo item = the Id of the spartan
-                trackers = await _context.TrackerItems.Where(td => td.SpartanId == spartan.Id).ToListAsync();
+                trackers = await _context.TrackerItems.Include(t => t.Spartan).Where(td => td.SpartanId == spartan.Id).ToListAsync();
             }
             if (role == "Trainer")
             {
                 // Trainer can see all the to dos!!
-                trackers = await _context.TrackerItems.ToListAsync();
+                trackers = await _context.TrackerItems.Include(t => t.Spartan).ToListAsync();
             }
 
             if (string.IsNullOrEmpty(filter))
@@ -226,6 +228,48 @@ namespace TraineeTracker.App.Services
                 .Select(t => _mapper.Map<TrackerVM>(t));*/
 
 
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<IEnumerable<TrackerAcademyVM>>> GetTrackerEntriesAcademyAsync(Spartan? spartan, string role, string filter)
+        {
+            var response = new ServiceResponse<IEnumerable<TrackerAcademyVM>>();
+
+            if (spartan == null)
+            {
+                response.Success = false;
+                response.Message = "Can't find Spartan";
+                return response;
+            }
+
+            if (_context.TrackerItems == null)
+            {
+                response.Success = false;
+                response.Message = "There are no tracker entries to do!";
+                return response;
+            }
+
+            List<Tracker> trackers = new List<Tracker>();
+
+                // if the role is trainee
+                // get the todo itemers
+                // where the SpartanId of that todo item = the Id of the spartan
+                trackers = await _context.TrackerItems.Include(t => t.Spartan).ToListAsync();
+
+            if (string.IsNullOrEmpty(filter))
+            {
+                response.Data = trackers.Select(td => _mapper.Map<TrackerAcademyVM>(td));
+                return response;
+            };
+
+            //trackers = await _context.TrackerEntries.Where(td => td.SpartanId == spartan.Id).ToListAsync();
+/*                        response.Data = trackers
+                            .Where(td =>
+                                td.Owner.Contains(filter!, StringComparison.OrdinalIgnoreCase)) ||
+                                td.SoftSkill.Contains(filter!, StringComparison.OrdinalIgnoreCase) ||
+                                td.TechnicalSkill.Contains(filter!, StringComparison.OrdinalIgnoreCase))
+                            .Select(t => _mapper.Map<TrackerVM>(t));*/
 
             return response;
         }

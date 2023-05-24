@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using TraineeTracker.App.Models.ViewModels;
@@ -25,10 +26,17 @@ namespace TraineeTracker.App.Controllers
             return response.Success ? View(response.Data) : Problem(response.Message);
         }
 
-        // GET: Trackers/Details/5
-        [Authorize(Roles = "Trainee, Trainer, Admin")]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Academy(string? filter = null)
         {
+            var user = await _service.GetUserAsync(HttpContext);
+            var response = await _service.GetTrackerEntriesAcademyAsync(user.Data, _service.GetRole(HttpContext), filter);
+            return response.Success ? View(response.Data) : Problem(response.Message);
+        }
+
+    // GET: Trackers/Details/5
+    [Authorize(Roles = "Trainee, Trainer, Admin")]
+    public async Task<IActionResult> Details(int? id)
+    {
             var user = await _service.GetUserAsync(HttpContext);
             var response = await _service.GetDetailsAsync(user.Data, id, _service.GetRole(HttpContext));
             return response.Success ? View(response.Data) : Problem(response.Message);

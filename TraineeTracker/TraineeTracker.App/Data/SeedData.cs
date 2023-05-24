@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TraineeTracker.App.Models;
 
@@ -52,18 +52,21 @@ namespace TraineeTracker.App.Data
                 .CreateAsync(admin)
                 .GetAwaiter()
                 .GetResult();
-
+          
             var nish = new Spartan
             {
                 UserName = "Nish",
                 Email = "Nish@spartaglobal.com",
                 EmailConfirmed = true,
+                Role = "Trainer"
             };
             var peter = new Spartan
             {
                 UserName = "Peter",
                 Email = "Peter@spartaglobal.com",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Course = "C#",
+                Role = "Trainee"
             };
             var matt = new Spartan
             {
