@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +55,8 @@ namespace TraineeTracker.App.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Spartan spartan)
         {
-            return View();
+            await _userManager.CreateAsync(spartan);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Trackers/Edit/5
@@ -82,9 +85,18 @@ namespace TraineeTracker.App.Controllers
         {
             var user = await _userManager.FindByIdAsync(id);
             user.UserName = spartan.UserName;
-            await _userManager.RemoveFromRoleAsync(user, user.Role);
-            await _userManager.AddToRoleAsync(user, spartan.Role);
-            user.Role = spartan.Role;
+            var admins = await _userManager.GetUsersInRoleAsync("Admin");
+            if (user.Role == "Admin" && admins.Count <= 1)
+            {
+                return Problem("There must be a minimum of 1 admin user");
+            }
+            else
+            {
+                await _userManager.RemoveFromRoleAsync(user, user.Role);
+                await _userManager.AddToRoleAsync(user, spartan.Role);
+                user.Role = spartan.Role;
+				
+			}
             user.Course = spartan.Course;
             user.Stream = spartan.Stream;
             await _userManager.UpdateAsync(user);
