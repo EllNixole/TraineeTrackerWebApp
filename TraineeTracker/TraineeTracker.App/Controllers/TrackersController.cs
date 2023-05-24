@@ -96,10 +96,10 @@ namespace TraineeTracker.App.Controllers
         }
 
         [Authorize(Roles = "Trainer, Admin")]
-        public async Task<IActionResult> UpdateTrackerGrade(int id, TrackerGradeVM trackerGradeVM) //Need to get the input text box value...
+        public async Task<IActionResult> UpdateTrackerGrade(int id, TrackerVM trackerVM, int grade) //Need to get the input text box value...
         {
             var user = await _service.GetUserAsync(HttpContext);
-            var response = await _service.UpdateTrackerEntriesGradeAsync(user.Data, id, trackerGradeVM);
+            var response = await _service.UpdateTrackerEntriesGradeAsync(user.Data, id, trackerVM, grade);
             return response.Success ? RedirectToAction(nameof(Index)) : Problem(response.Message);
         }
     }

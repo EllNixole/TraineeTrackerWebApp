@@ -283,7 +283,7 @@ namespace TraineeTracker.App.Services
             return response;
         }
 
-        public async Task<ServiceResponse<TrackerVM>> UpdateTrackerEntriesGradeAsync(Spartan? spartan, int id, TrackerGradeVM trackerGradeVM)
+        public async Task<ServiceResponse<TrackerVM>> UpdateTrackerEntriesGradeAsync(Spartan? spartan, int id, TrackerVM trackerVM, int grade)
         {
             var response = new ServiceResponse<TrackerVM>();
             if (spartan == null)
@@ -292,7 +292,7 @@ namespace TraineeTracker.App.Services
                 response.Message = "No user found";
                 return response;
             }
-            if (id != trackerGradeVM.Id)
+            if (id != trackerVM.Id)
             {
                 response.Success = false;
                 response.Message = "Model error";
@@ -308,7 +308,7 @@ namespace TraineeTracker.App.Services
                 return response;
             }
 
-            trackerToDo.PercentGrade = trackerGradeVM.PercentGrade;
+            trackerToDo.PercentGrade = grade;
 
             await _context.SaveChangesAsync();
             return response;

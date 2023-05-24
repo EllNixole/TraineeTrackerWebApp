@@ -77,7 +77,7 @@
                     @{
                         if (this.User.IsInRole("Trainer") || this.User.IsInRole("Admin"))
                         {
-                            @Html.TextBoxFor(modelItem => item.PercentGrade)
+                            <input name="grade" value="@Html.DisplayFor(modelItem => item.PercentGrade)"></input>
                         }
                         else
                         {
