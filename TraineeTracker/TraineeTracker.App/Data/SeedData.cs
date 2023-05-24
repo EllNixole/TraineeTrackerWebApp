@@ -57,19 +57,23 @@ namespace TraineeTracker.App.Data
             {
                 UserName = "Phil",
                 Email = "Phil@spartaglobal.com",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Role = "Admin"
             };
             var nish = new Spartan
             {
                 UserName = "Nish",
                 Email = "Nish@spartaglobal.com",
                 EmailConfirmed = true,
+                Role = "Trainer"
             };
             var peter = new Spartan
             {
                 UserName = "Peter",
                 Email = "Peter@spartaglobal.com",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Course = "C#",
+                Role = "Trainee"
             };
 
             userManager
@@ -116,8 +120,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "Continue it",
                     IsReviewed = false,
                     Spartan = peter,
-                    PercentGrade = 0,
-                    Course = "C#"
+                    PercentGrade = 0
                 },
                 new Tracker
                 {
@@ -127,8 +130,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "...",
                     IsReviewed = true,
                     Spartan = peter,
-                    PercentGrade = 0,
-                    Course = "C#"
+                    PercentGrade = 0
                 },
                 new Tracker
                 {
@@ -138,8 +140,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "Doing well",
                     IsReviewed = true,
                     Spartan = peter,
-                    PercentGrade = 0,
-                    Course = "C#"
+                    PercentGrade = 0
                 },
                 new Tracker
                 {
@@ -149,8 +150,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "Continue",
                     IsReviewed = false,
                     Spartan = peter,
-                    PercentGrade = 0,
-                    Course = "C#"
+                    PercentGrade = 0
                 },
                 new Tracker
                 {
@@ -160,8 +160,7 @@ namespace TraineeTracker.App.Data
                     ContinueDoingText = "it",
                     IsReviewed = false,
                     Spartan = peter,
-                    PercentGrade = 0,
-                    Course = "C#"
+                    PercentGrade = 0
                 }
             );
             context.SaveChanges();
