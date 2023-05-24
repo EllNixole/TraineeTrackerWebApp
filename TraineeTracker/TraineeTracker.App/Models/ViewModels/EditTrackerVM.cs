@@ -21,7 +21,7 @@ namespace TraineeTracker.App.Models.ViewModels
 
         [DisplayName("Grade")]
         [Range(0, 100)]
-        public int PercentGrade { get; set; } = 0;
+        public int PercentGrade { get; set; }
 
         [HiddenInput(DisplayValue = false)]
         public bool IsReviewed { get; set; }

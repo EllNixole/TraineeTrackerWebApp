@@ -66,7 +66,7 @@ namespace TraineeTracker.App.Services
                 return response;
             }
 
-            if (trackerToDo.SpartanId == spartan.Id)
+            if (trackerToDo.SpartanId == spartan.Id || spartan.Role == "Admin")
             {
                 _context.TrackerItems.Remove(trackerToDo);
                 await _context.SaveChangesAsync();
@@ -88,7 +88,6 @@ namespace TraineeTracker.App.Services
                 return response;
             }
 
-            var spartanOwnerId = await GetSpartanOwnerAsync(id);
             if (id != trackerEditVM.Id)
             {
                 response.Message = "Error updating";
@@ -97,7 +96,6 @@ namespace TraineeTracker.App.Services
             }
 
             var trackerToDo = _mapper.Map<Tracker>(trackerEditVM);
-            //trackerToDo.Owner = spartan.UserName;
             _context.Update(trackerToDo);
             trackerToDo.SpartanId = spartan.Id;
             await _context.SaveChangesAsync();
@@ -352,7 +350,10 @@ namespace TraineeTracker.App.Services
                 return response;
             }
 
-            trackerToDo.PercentGrade = grade;
+            if (grade >= 0 && grade <= 100)
+            {
+                trackerToDo.PercentGrade = grade;
+            }
 
             await _context.SaveChangesAsync();
             return response;
