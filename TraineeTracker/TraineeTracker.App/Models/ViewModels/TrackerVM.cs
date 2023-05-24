@@ -22,7 +22,6 @@ namespace TraineeTracker.App.Models.ViewModels
 		[Range(0, 100)]
 		public int PercentGrade { get; set; }
 
-
         [DisplayName("Reviewed")]
         public bool IsReviewed { get; set; }
 
