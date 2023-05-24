@@ -52,7 +52,7 @@ namespace TraineeTracker.App.Data
                 .CreateAsync(admin)
                 .GetAwaiter()
                 .GetResult();
-          
+
             var nish = new Spartan
             {
                 UserName = "Nish",

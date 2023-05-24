@@ -18,9 +18,9 @@ namespace TraineeTracker.App.Models.ViewModels
         [DisplayName("Soft Skill")]
         public string SpartanSkill { get; set; } = "Partially Skilled";
 
-		[DisplayName("Grade")]
-		[Range(0, 100)]
-		public int PercentGrade { get; set; }
+        [DisplayName("Grade")]
+        [Range(0, 100)]
+        public int PercentGrade { get; set; }
 
         [DisplayName("Reviewed")]
         public bool IsReviewed { get; set; }
