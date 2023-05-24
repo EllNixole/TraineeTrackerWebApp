@@ -47,8 +47,5 @@ namespace TraineeTracker.App.Models
 		[DisplayName("Grade")]
         [Range(0,100)]
 		public int PercentGrade { get; set; } = 0;
-
-		[StringLength(500)]
-		public string? Course { get; set; } 
     }
 }
