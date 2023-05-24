@@ -1,4 +1,7 @@
-﻿namespace TraineeTracker.App.Models.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+
+namespace TraineeTracker.App.Models.ViewModels
 {
     public class MarkReviewedVM
     {

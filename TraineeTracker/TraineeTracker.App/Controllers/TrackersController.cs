@@ -63,7 +63,7 @@ namespace TraineeTracker.App.Controllers
         }
 
         // GET: Trackers/Edit/5
-        [Authorize(Roles = "Trainee, Trainer, Admin")]
+        [Authorize(Roles = "Trainee")]
         public async Task<IActionResult> Edit(int? id)
         {
             var user = await _service.GetUserAsync(HttpContext);
@@ -76,7 +76,7 @@ namespace TraineeTracker.App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Trainee, Admin")]
+        [Authorize(Roles = "Trainee")]
         public async Task<IActionResult> Edit(int id, EditTrackerVM editTrackerVM)
         {
             var user = await _service.GetUserAsync(HttpContext);
@@ -95,11 +95,19 @@ namespace TraineeTracker.App.Controllers
             return response.Success ? RedirectToAction(nameof(Index)) : Problem(response.Message);
         }
 
-        [Authorize(Roles = "Trainee, Admin")]
+        [Authorize(Roles = "Trainer, Admin")]
         public async Task<IActionResult> UpdateTrackerReviewed(int id, MarkReviewedVM markReviewedVM)
         {
             var user = await _service.GetUserAsync(HttpContext);
             var response = await _service.UpdateTrackerEntriesCompleteAsync(user.Data, id, markReviewedVM);
+            return response.Success ? RedirectToAction(nameof(Index)) : Problem(response.Message);
+        }
+
+        [Authorize(Roles = "Trainer, Admin")]
+        public async Task<IActionResult> UpdateTrackerGrade(int id, TrackerVM trackerVM, int grade) //Need to get the input text box value...
+        {
+            var user = await _service.GetUserAsync(HttpContext);
+            var response = await _service.UpdateTrackerEntriesGradeAsync(user.Data, id, trackerVM, grade);
             return response.Success ? RedirectToAction(nameof(Index)) : Problem(response.Message);
         }
     }
