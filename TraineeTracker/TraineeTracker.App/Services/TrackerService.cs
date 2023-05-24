@@ -220,12 +220,12 @@ namespace TraineeTracker.App.Services
             };
 
             //trackers = await _context.TrackerEntries.Where(td => td.SpartanId == spartan.Id).ToListAsync();
-/*            response.Data = trackers
-                .Where(td =>
-                    td.Owner.Contains(filter!, StringComparison.OrdinalIgnoreCase)) *//*||
-                    td.SoftSkill.Contains(filter!, StringComparison.OrdinalIgnoreCase) ||
-					td.TechnicalSkill.Contains(filter!, StringComparison.OrdinalIgnoreCase))*//*
-                .Select(t => _mapper.Map<TrackerVM>(t));*/
+            /*            response.Data = trackers
+                            .Where(td =>
+                                td.Owner.Contains(filter!, StringComparison.OrdinalIgnoreCase)) *//*||
+                                td.SoftSkill.Contains(filter!, StringComparison.OrdinalIgnoreCase) ||
+                                td.TechnicalSkill.Contains(filter!, StringComparison.OrdinalIgnoreCase))*//*
+                            .Select(t => _mapper.Map<TrackerVM>(t));*/
 
 
 
@@ -252,10 +252,10 @@ namespace TraineeTracker.App.Services
 
             List<Tracker> trackers = new List<Tracker>();
 
-                // if the role is trainee
-                // get the todo itemers
-                // where the SpartanId of that todo item = the Id of the spartan
-                trackers = await _context.TrackerItems.Include(t => t.Spartan).ToListAsync();
+            // if the role is trainee
+            // get the todo itemers
+            // where the SpartanId of that todo item = the Id of the spartan
+            trackers = await _context.TrackerItems.Include(t => t.Spartan).ToListAsync();
 
             if (string.IsNullOrEmpty(filter))
             {
@@ -264,12 +264,12 @@ namespace TraineeTracker.App.Services
             };
 
             //trackers = await _context.TrackerEntries.Where(td => td.SpartanId == spartan.Id).ToListAsync();
-/*                        response.Data = trackers
-                            .Where(td =>
-                                td.Owner.Contains(filter!, StringComparison.OrdinalIgnoreCase)) ||
-                                td.SoftSkill.Contains(filter!, StringComparison.OrdinalIgnoreCase) ||
-                                td.TechnicalSkill.Contains(filter!, StringComparison.OrdinalIgnoreCase))
-                            .Select(t => _mapper.Map<TrackerVM>(t));*/
+            /*                        response.Data = trackers
+                                        .Where(td =>
+                                            td.Owner.Contains(filter!, StringComparison.OrdinalIgnoreCase)) ||
+                                            td.SoftSkill.Contains(filter!, StringComparison.OrdinalIgnoreCase) ||
+                                            td.TechnicalSkill.Contains(filter!, StringComparison.OrdinalIgnoreCase))
+                                        .Select(t => _mapper.Map<TrackerVM>(t));*/
 
             return response;
         }

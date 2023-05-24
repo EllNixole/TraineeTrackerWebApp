@@ -2,12 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Versioning;
 using System.Data;
 using TraineeTracker.App.Data;
 using TraineeTracker.App.Models;
-using TraineeTracker.App.Models.ViewModels;
-using TraineeTracker.App.Services;
 
 namespace TraineeTracker.App.Controllers
 {
@@ -30,7 +27,7 @@ namespace TraineeTracker.App.Controllers
         {
             var spartans = _userManager.Users.ToList();
             return View(spartans);
-            
+
         }
 
         // GET: Trackers/Details/5
@@ -65,7 +62,7 @@ namespace TraineeTracker.App.Controllers
         {
             var spartan = await _userManager.FindByIdAsync(id);
 
-            if(spartan == null)
+            if (spartan == null)
             {
                 return Problem();
             }
@@ -92,7 +89,7 @@ namespace TraineeTracker.App.Controllers
             user.Stream = spartan.Stream;
             await _userManager.UpdateAsync(user);
             return RedirectToAction(nameof(Index));
-		}
+        }
 
         // POST: Trackers/Delete/5
         [HttpPost]
