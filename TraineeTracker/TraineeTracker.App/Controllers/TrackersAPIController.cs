@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TraineeTracker.App.Data;
 using TraineeTracker.App.Models;
+using TraineeTracker.App.Models.ViewModels;
 
 namespace TraineeTracker.App.Controllers
 {
@@ -16,27 +18,27 @@ namespace TraineeTracker.App.Controllers
     public class TrackersAPIController : ControllerBase
     {
         private readonly TraineeTrackerContext _context;
-        private readonly UserManager<Spartan> _userManager;
+        private readonly IMapper _mapper;
 
-        public TrackersAPIController(TraineeTrackerContext context, UserManager<Spartan> userManager)
+        public TrackersAPIController(TraineeTrackerContext context, IMapper mapper)
         {
             _context = context;
-            _userManager = userManager;
+            _mapper = mapper;
         }
 
         // GET: api/TrackersAPI
         [HttpGet("trackers")]
-        public async Task<ActionResult<IEnumerable<Tracker>>> GetTrackerItems()
+        public async Task<ActionResult<IEnumerable<TrackerVM>>> GetTrackerItems()
         {
           if (_context.TrackerItems == null)
           {
               return NotFound();
           }
-            return await _context.TrackerItems.ToListAsync();
+          return await _context.TrackerItems.Include(t=>t.Spartan).Select(t=>_mapper.Map<TrackerVM>(t)).ToListAsync();
         }
 
         // GET: api/TrackersAPI/5
-        [HttpGet("{id}")]
+        [HttpGet("trackers/{id}")]
         public async Task<ActionResult<Tracker>> GetTracker(int id)
         {
           if (_context.TrackerItems == null)
@@ -51,6 +53,38 @@ namespace TraineeTracker.App.Controllers
             }
 
             return tracker;
+        }
+
+        // GET: api/Trackers/bycourse
+        [HttpGet("trackers/bycourse")]
+        public async Task<ActionResult<IEnumerable<TrackerVM>>> GetTrackerItemsByCourse()
+        {
+            if (_context.TrackerItems == null)
+            {
+                return NotFound();
+            }
+            return await _context.TrackerItems.Include(t => t.Spartan).Select(t => _mapper.Map<TrackerVM>(t)).ToListAsync();
+        }
+
+        // GET: api/trainees
+        [HttpGet("trainees")]
+        public async Task<ActionResult<IEnumerable<SpartanDTO>>> GetTraineeItems()
+        {
+            if (_context.TrackerItems == null)
+            {
+                return NotFound();
+            }
+            return await _context.Spartans.Where(t=>t.Role == "Trainee").Select(td => _mapper.Map<SpartanDTO>(td)).ToListAsync();
+        }
+        // GET: api/trainees/?C#
+        [HttpGet("trainees/bycourse")]
+        public async Task<ActionResult<IEnumerable<SpartanDTO>>> GetTraineeItemsByCourse()
+        {
+            if (_context.TrackerItems == null)
+            {
+                return NotFound();
+            }
+            return await _context.Spartans.Where(t => t.Role == "Trainee").OrderBy(t => t.Course).Select(td => _mapper.Map<SpartanDTO>(td)).ToListAsync();
         }
 
         // PUT: api/TrackersAPI/5

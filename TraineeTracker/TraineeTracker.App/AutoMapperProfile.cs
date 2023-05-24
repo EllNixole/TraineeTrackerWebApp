@@ -13,5 +13,6 @@ public class AutoMapperProfile : Profile
         CreateMap<Tracker, DetailsTrackerVM>().ReverseMap();
         CreateMap<Tracker, EditTrackerVM>().ReverseMap();
         CreateMap<Tracker, CreateTrackerVM>().ReverseMap();
+        CreateMap<Spartan, SpartanDTO>().ReverseMap();
     }
 }
