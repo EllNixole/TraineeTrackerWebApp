@@ -20,7 +20,8 @@ namespace TraineeTracker.App
 
             builder.Services.AddDefaultIdentity<Spartan>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<TraineeTrackerContext>();
+                .AddEntityFrameworkStores<TraineeTrackerContext>()
+                .AddUserManager<SpartanUserManager>();
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddAutoMapper(typeof(Program).Assembly);

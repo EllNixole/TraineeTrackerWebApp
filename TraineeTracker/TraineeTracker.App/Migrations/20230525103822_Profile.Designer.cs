@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TraineeTracker.App.Data;
 
@@ -11,9 +12,11 @@ using TraineeTracker.App.Data;
 namespace TraineeTracker.App.Migrations
 {
     [DbContext(typeof(TraineeTrackerContext))]
-    partial class TraineeTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20230525103822_Profile")]
+    partial class Profile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -302,12 +305,6 @@ namespace TraineeTracker.App.Migrations
                     b.Property<string>("Experience")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Role")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
@@ -318,9 +315,6 @@ namespace TraineeTracker.App.Migrations
                     b.Property<string>("Stream")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("Spartan");
                 });
