@@ -77,11 +77,11 @@ namespace TraineeTrackerTests
             return mgr;
         }
 
-        public static Spartan CreateFakeSpartan()
+        public static Spartan CreateFakeSpartan(string id)
         {
             var fakeSpartan = new Spartan()
             {
-                Id = "Bob",
+                Id = id,
                 UserName = "Robert",
                 Course = "Something",
                 Stream = "Brook",
@@ -90,13 +90,13 @@ namespace TraineeTrackerTests
             return fakeSpartan;
         }
 
-        public static Tracker CreateFakeTracker()
+        public static Tracker CreateFakeTracker(string spartanId)
         {
             var fakeTracker = new Tracker()
             {
                 Title = "Week",
                 Id = 1,
-                Spartan = CreateFakeSpartan()
+                Spartan = CreateFakeSpartan(spartanId)
             };
             return fakeTracker;
         }
