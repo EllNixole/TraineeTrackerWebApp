@@ -1,6 +1,6 @@
-﻿using TraineeTracker.App.Models;
+﻿using Moq;
+using TraineeTracker.App.Models;
 using TraineeTracker.App.Models.ViewModels;
-using Moq;
 
 namespace TraineeTrackerTests
 {
@@ -41,6 +41,24 @@ namespace TraineeTrackerTests
         {
             var response = new ServiceResponse<TrackerVM>();
             response.Data = Mock.Of<TrackerVM>();
+            return response;
+        }
+        public static ServiceResponse<EditTrackerVM> GetEditTrackerServiceResponse()
+        {
+            var response = new ServiceResponse<EditTrackerVM>();
+            response.Data = Mock.Of<EditTrackerVM>();
+            return response;
+        }
+        public static ServiceResponse<DetailsTrackerVM> GetDetailsTrackerServiceResponse()
+        {
+            var response = new ServiceResponse<DetailsTrackerVM>();
+            response.Data = Mock.Of<DetailsTrackerVM>();
+            return response;
+        }
+        public static ServiceResponse<CreateTrackerVM> GetCreateTrackerServiceResponse()
+        {
+            var response = new ServiceResponse<CreateTrackerVM>();
+            response.Data = Mock.Of<CreateTrackerVM>();
             return response;
         }
     }

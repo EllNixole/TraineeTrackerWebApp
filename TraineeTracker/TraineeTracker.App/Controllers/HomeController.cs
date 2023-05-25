@@ -1,26 +1,23 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using TraineeTracker.App.Data;
 using TraineeTracker.App.Models;
-using TraineeTracker.App.Models.ViewModels;
 
 namespace TraineeTracker.App.Controllers
 {
-    
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly TraineeTrackerContext _context;
-        
+
 
         public HomeController(ILogger<HomeController> logger, TraineeTrackerContext context)
         {
             _logger = logger;
             _context = context;
-            
+
         }
 
         public IActionResult Index()

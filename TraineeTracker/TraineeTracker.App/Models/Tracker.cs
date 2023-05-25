@@ -44,8 +44,9 @@ namespace TraineeTracker.App.Models
         [ForeignKey("Spartan")]
         public string SpartanId { get; set; } = null!;
 
-		[DisplayName("Grade")]
-        [Range(0,100)]
-		public int PercentGrade { get; set; } = 0;
+        [DisplayName("Grade")]
+        [Range(0, 100)]
+        public int PercentGrade { get; set; } = 0;
+
     }
 }

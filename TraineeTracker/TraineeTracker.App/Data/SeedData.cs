@@ -52,7 +52,7 @@ namespace TraineeTracker.App.Data
                 .CreateAsync(admin)
                 .GetAwaiter()
                 .GetResult();
-          
+
             var nish = new Spartan
             {
                 UserName = "Nish",
@@ -85,7 +85,7 @@ namespace TraineeTracker.App.Data
             {
                 UserName = "Jacob",
                 Email = "Jacob@spartaglobal.com",
-                EmailConfirmed = true,
+                EmailConfirmed = false,
                 Course = "C#"
             };
             var danyal = new Spartan
