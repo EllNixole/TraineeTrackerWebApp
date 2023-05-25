@@ -12,11 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
@@ -47,7 +43,7 @@
                 Text = "Trainee",
                 Value = "Trainee"
             });
-             
+
                 }
                 @Html.DropDownList("Role", roles, new { @class = "form-control" })
                 <span asp-validation-for="Role" class="text-danger"></span>
@@ -57,11 +53,16 @@
                 <input asp-for="Stream" class="form-control" />
                 <span asp-validation-for="Stream" class="text-danger"></span>
             </div>
+            <div>
+                <label class="control-label">Password</label>
+                <input type="password" id="p" name="p" class="form-control" />
+            </div>
 
-           <br />
+            <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+
         </form>
     </div>
 </div>
@@ -71,5 +72,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
