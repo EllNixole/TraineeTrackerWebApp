@@ -85,7 +85,7 @@ namespace TraineeTracker.App.Data
             {
                 UserName = "Jacob",
                 Email = "Jacob@spartaglobal.com",
-                EmailConfirmed = true,
+                EmailConfirmed = false,
                 Course = "C#"
             };
             var danyal = new Spartan
