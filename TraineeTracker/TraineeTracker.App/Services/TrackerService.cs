@@ -68,6 +68,20 @@ namespace TraineeTracker.App.Services
 
             if (trackerToDo.SpartanId == spartan.Id)
             {
+
+                _context.TrackerItems.Remove(trackerToDo);
+                await _context.SaveChangesAsync();
+                response.Success = true;
+                response.Message = "Tracker entry removed";
+            }
+
+            else if (spartan.Role == "Admin")
+            {
+                string spartanId = trackerToDo.SpartanId;
+                Spartan spart = await _context.Spartans.FindAsync(spartanId);
+                response.Data = _mapper.Map<TrackerVM>(trackerToDo);
+                response.Data.Spartan = _mapper.Map<SpartanDTO>(spart);
+
                 _context.TrackerItems.Remove(trackerToDo);
                 await _context.SaveChangesAsync();
                 response.Success = true;
@@ -341,7 +355,7 @@ namespace TraineeTracker.App.Services
                 return response;
             }
 
-            var trackerToDo = await _context.TrackerItems.FindAsync(id);
+            var trackerToDo = await _context.TrackerItems.Include(s => s.Spartan).Where(s => s.Id == id).FirstOrDefaultAsync();
 
             if (trackerToDo == null)
             {
@@ -351,8 +365,13 @@ namespace TraineeTracker.App.Services
             }
 
             trackerToDo.IsReviewed = markCompleteVM.IsReviewed;
-
             await _context.SaveChangesAsync();
+
+            /*string spartanId = trackerToDo.SpartanId;
+            Spartan spart = await _context.Spartans.FindAsync(spartanId);*/
+            response.Data = _mapper.Map<TrackerVM>(trackerToDo);
+            /*response.Data.Spartan = _mapper.Map<SpartanDTO>(spart);*/
+
             return response;
         }
 
@@ -372,7 +391,7 @@ namespace TraineeTracker.App.Services
                 return response;
             }
 
-            var trackerToDo = await _context.TrackerItems.FindAsync(id);
+            var trackerToDo = await _context.TrackerItems.Include(s => s.Spartan).Where(s => s.Id == id).FirstOrDefaultAsync();
 
             if (trackerToDo == null)
             {
@@ -384,6 +403,9 @@ namespace TraineeTracker.App.Services
             trackerToDo.PercentGrade = grade;
 
             await _context.SaveChangesAsync();
+
+            response.Data = _mapper.Map<TrackerVM>(trackerToDo);
+
             return response;
         }
 
