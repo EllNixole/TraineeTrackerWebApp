@@ -68,6 +68,10 @@ namespace TraineeTracker.App.Services
 
             if (trackerToDo.SpartanId == spartan.Id)
             {
+				string spartanId = trackerToDo.SpartanId;
+				Spartan spart = await _context.Spartans.FindAsync(spartanId);
+				response.Data = _mapper.Map<TrackerVM>(trackerToDo);
+				response.Data.Spartan = _mapper.Map<SpartanDTO>(spart);
 
                 _context.TrackerItems.Remove(trackerToDo);
                 await _context.SaveChangesAsync();
