@@ -232,16 +232,6 @@ namespace TraineeTracker.App.Services
             }
 
 			response.Data = trackers.Select(td => _mapper.Map<TrackerVM>(td));
-
-			//trackers = await _context.TrackerEntries.Where(td => td.SpartanId == spartan.Id).ToListAsync();
-			/*response.Data = trackers
-                .Where(td =>
-                    td.Spartan.UserName.Contains(filter!, StringComparison.OrdinalIgnoreCase) ||
-                    td.Spartan.Stream.Contains(filter!, StringComparison.OrdinalIgnoreCase))
-                .Select(t => _mapper.Map<TrackerVM>(t));*/
-
-
-
 			return response;
         }
 
