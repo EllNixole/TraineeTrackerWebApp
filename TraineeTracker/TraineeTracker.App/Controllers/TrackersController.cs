@@ -16,18 +16,30 @@ namespace TraineeTracker.App.Controllers
         }
 
         // GET: Trackers
-        [Authorize(Roles = "Trainee, Trainer, Admin")]
+        /*[Authorize(Roles = "Trainee, Trainer, Admin")]
         public async Task<IActionResult> Index(string? filter = null)
         {
             var user = await _service.GetUserAsync(HttpContext);
             var response = await _service.GetTrackerEntriesAsync(user.Data, _service.GetRole(HttpContext), filter);
             return response.Success ? View(response.Data) : Problem(response.Message);
-        }
+        }*/
 
         public async Task<IActionResult> Academy(string? filter = null)
         {
             var user = await _service.GetUserAsync(HttpContext);
             var response = await _service.GetTrackerEntriesAcademyAsync(user.Data, _service.GetRole(HttpContext), filter);
+            return response.Success ? View(response.Data) : Problem(response.Message);
+        }
+        [Authorize(Roles = "Trainee, Trainer, Admin")]
+        public async Task<IActionResult> Index(string userName,string? filter = null)
+        {
+            var user = await _service.GetUserAsync(HttpContext);
+            if (_service.GetRole(HttpContext) == "Trainee")
+            {
+                var traineeResponse = await _service.GetTrackerEntriesAsync(user.Data, _service.GetRole(HttpContext), filter);
+                return traineeResponse.Success ? View(traineeResponse.Data) : Problem(traineeResponse.Message);
+            }
+            var response = await _service.GetTrackerEntryAcademyAsync(user.Data, _service.GetRole(HttpContext), userName);
             return response.Success ? View(response.Data) : Problem(response.Message);
         }
 
@@ -41,7 +53,7 @@ namespace TraineeTracker.App.Controllers
         }
 
         // GET: Trackers/Create
-        [Authorize(Roles = "Trainee, Admin")]
+        [Authorize(Roles = "Trainee")]
         public IActionResult Create()
         {
             return View();
@@ -52,7 +64,7 @@ namespace TraineeTracker.App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Trainee, Admin")]
+        [Authorize(Roles = "Trainee")]
         public async Task<IActionResult> Create(CreateTrackerVM createTrackerVM)
         {
             var user = await _service.GetUserAsync(HttpContext);
@@ -85,12 +97,12 @@ namespace TraineeTracker.App.Controllers
         // POST: Trackers/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Trainee, Trainer, Admin")]
+        [Authorize(Roles = "Trainee, Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var user = await _service.GetUserAsync(HttpContext);
             var response = await _service.DeleteTrackerEntriesAsync(user.Data, id);
-            return response.Success ? RedirectToAction(nameof(Index)) : Problem(response.Message);
+            return response.Success ? RedirectToAction("Index", "Trackers", new { userName = response.Data.Spartan.UserName }) : Problem(response.Message);
         }
 
         [Authorize(Roles = "Trainer, Admin")]
@@ -98,7 +110,8 @@ namespace TraineeTracker.App.Controllers
         {
             var user = await _service.GetUserAsync(HttpContext);
             var response = await _service.UpdateTrackerEntriesCompleteAsync(user.Data, id, markReviewedVM);
-            return response.Success ? RedirectToAction(nameof(Index)) : Problem(response.Message);
+
+            return response.Success ? RedirectToAction("Index", "Trackers", new { userName = response.Data.Spartan.UserName }) : Problem(response.Message);
         }
 
         [Authorize(Roles = "Trainer, Admin")]
@@ -106,7 +119,7 @@ namespace TraineeTracker.App.Controllers
         {
             var user = await _service.GetUserAsync(HttpContext);
             var response = await _service.UpdateTrackerEntriesGradeAsync(user.Data, id, trackerVM, grade);
-            return response.Success ? RedirectToAction(nameof(Index)) : Problem(response.Message);
+            return response.Success ? RedirectToAction("Index", "Trackers", new { userName = response.Data.Spartan.UserName }) : Problem(response.Message);
         }
     }
 }

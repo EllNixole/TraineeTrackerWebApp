@@ -15,14 +15,6 @@
     }
 }
 
-<form asp-controller="Trackers" asp-action="Index" method="get">
-    <p>
-        <label for="filter">Filter by: </label>
-        <input type="text" id="filter" name="filter" />
-        <button type="submit">Filter</button>
-    </p>
-</form>
-
 <table class="table table-striped">
     <thead>
         <tr>
@@ -107,9 +99,12 @@
             </td>
             <td class="btn-group-vertical">
                     @{
-                        if (this.User.IsInRole("Trainee") || this.User.IsInRole("Admin"))
+                        if (this.User.IsInRole("Trainee"))
                         {
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                        }
+                        if (this.User.IsInRole("Trainee") || this.User.IsInRole("Admin"))
+                        {
                             <a class="btn btn-danger">
                                 @using (Html.BeginForm("Delete", "Trackers", new { id = item.Id }))
                                 {
