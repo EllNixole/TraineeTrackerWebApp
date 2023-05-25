@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.AspNetCore.Identity;
+using Moq;
 using TraineeTracker.App.Models;
 using TraineeTracker.App.Models.ViewModels;
 
@@ -61,5 +62,44 @@ namespace TraineeTrackerTests
             response.Data = Mock.Of<CreateTrackerVM>();
             return response;
         }
+
+        public static Mock<UserManager<TUser>> MockUserManager<TUser>(List<TUser> ls) where TUser : class
+        {
+            var store = new Mock<IUserStore<TUser>>();
+            var mgr = new Mock<UserManager<TUser>>(store.Object, null, null, null, null, null, null, null, null);
+            mgr.Object.UserValidators.Add(new UserValidator<TUser>());
+            mgr.Object.PasswordValidators.Add(new PasswordValidator<TUser>());
+
+            mgr.Setup(x => x.DeleteAsync(It.IsAny<TUser>())).ReturnsAsync(IdentityResult.Success);
+            mgr.Setup(x => x.CreateAsync(It.IsAny<TUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success).Callback<TUser, string>((x, y) => ls.Add(x));
+            mgr.Setup(x => x.UpdateAsync(It.IsAny<TUser>())).ReturnsAsync(IdentityResult.Success);
+
+            return mgr;
+        }
+
+        public static Spartan CreateFakeSpartan()
+        {
+            var fakeSpartan = new Spartan()
+            {
+                Id = "Bob",
+                UserName = "Robert",
+                Course = "Something",
+                Stream = "Brook",
+                TrackerItems = new List<Tracker>()
+            };
+            return fakeSpartan;
+        }
+
+        public static Tracker CreateFakeTracker()
+        {
+            var fakeTracker = new Tracker()
+            {
+                Title = "Week",
+                Id = 1,
+                Spartan = CreateFakeSpartan()
+            };
+            return fakeTracker;
+        }
+
     }
 }
