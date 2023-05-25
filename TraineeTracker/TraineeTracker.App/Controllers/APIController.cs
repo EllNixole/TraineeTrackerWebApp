@@ -9,16 +9,17 @@ namespace TraineeTracker.App.Controllers
 {
     [Route("api/")]
     [ApiController]
-    public class TrackersAPIController : ControllerBase
+    public class APIController : ControllerBase
     {
         private readonly TraineeTrackerContext _context;
         private readonly IMapper _mapper;
 
-        public TrackersAPIController(TraineeTrackerContext context, IMapper mapper)
+        public APIController(TraineeTrackerContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
+        #region Trackers
 
         // GET: api/TrackersAPI
         [HttpGet("trackers")]
@@ -33,20 +34,20 @@ namespace TraineeTracker.App.Controllers
 
         // GET: api/TrackersAPI/5
         [HttpGet("trackers/{id}")]
-        public async Task<ActionResult<Tracker>> GetTracker(int id)
+        public async Task<ActionResult<TrackerVM>> GetTracker(int id)
         {
             if (_context.TrackerItems == null)
             {
                 return NotFound();
             }
             var tracker = await _context.TrackerItems.FindAsync(id);
-
+            
             if (tracker == null)
             {
                 return NotFound();
             }
 
-            return tracker;
+            return _mapper.Map<TrackerVM>(tracker);
         }
 
         // GET: api/Trackers/bycourse
@@ -60,28 +61,7 @@ namespace TraineeTracker.App.Controllers
             return await _context.TrackerItems.Include(t => t.Spartan).Select(t => _mapper.Map<TrackerVM>(t)).ToListAsync();
         }
 
-        // GET: api/trainees
-        [HttpGet("trainees")]
-        public async Task<ActionResult<IEnumerable<SpartanDTO>>> GetTraineeItems()
-        {
-            if (_context.TrackerItems == null)
-            {
-                return NotFound();
-            }
-            return await _context.Spartans.Where(t => t.Role == "Trainee").Select(td => _mapper.Map<SpartanDTO>(td)).ToListAsync();
-        }
-        // GET: api/trainees/?C#
-        [HttpGet("trainees/bycourse")]
-        public async Task<ActionResult<IEnumerable<SpartanDTO>>> GetTraineeItemsByCourse()
-        {
-            if (_context.TrackerItems == null)
-            {
-                return NotFound();
-            }
-            return await _context.Spartans.Where(t => t.Role == "Trainee").OrderBy(t => t.Course).Select(td => _mapper.Map<SpartanDTO>(td)).ToListAsync();
-        }
-
-        // PUT: api/TrackersAPI/5
+       // PUT: api/TrackersAPI/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [NonAction]
         public async Task<IActionResult> PutTracker(int id, Tracker tracker)
@@ -151,5 +131,50 @@ namespace TraineeTracker.App.Controllers
         {
             return (_context.TrackerItems?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        #endregion
+
+        #region Users/Spartans
+
+        // GET: api/trainees
+        [HttpGet("trainees")]
+        public async Task<ActionResult<IEnumerable<SpartanDTO>>> GetAllSpartans()
+        {
+            if (_context.TrackerItems == null)
+            {
+                return NotFound();
+            }
+            return await _context.Spartans.Where(t => t.Role == "Trainee").Select(td => _mapper.Map<SpartanDTO>(td)).ToListAsync();
+        }
+        // GET: api/trainees/?C#
+        [HttpGet("trainees/bycourse")]
+        public async Task<ActionResult<IEnumerable<SpartanDTO>>> GetSpartanByCourse()
+        {
+            if (_context.TrackerItems == null)
+            {
+                return NotFound();
+            }
+            return await _context.Spartans.Where(t => t.Role == "Trainee").OrderBy(t => t.Course).Select(td => _mapper.Map<SpartanDTO>(td)).ToListAsync();
+        }
+
+        // GET: api/TrackersAPI/5
+        //[HttpGet("trainees/{id}")]
+        [NonAction]
+        public async Task<ActionResult<SpartanDTO>> GetSpartan(string id)
+        {
+            if (_context.TrackerItems == null)
+            {
+                return NotFound();
+            }
+            var spartan = await _context.Spartans.FindAsync(id);
+
+            if (spartan== null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map<SpartanDTO>(spartan);
+        }
+        #endregion
     }
 }
