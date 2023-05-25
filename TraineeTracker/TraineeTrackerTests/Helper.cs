@@ -13,7 +13,8 @@ namespace TraineeTrackerTests
             {
                 Id = "Id",
                 Email = "Talal@spartaglobal.com",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                Role = "Trainee"
             };
 
             return response;
@@ -40,7 +41,7 @@ namespace TraineeTrackerTests
         public static ServiceResponse<TrackerVM> GetTrackerServiceResponse()
         {
             var response = new ServiceResponse<TrackerVM>();
-            response.Data = Mock.Of<TrackerVM>();
+            response.Data = new TrackerVM() { Title = "temp", Spartan = new SpartanDTO() { UserName = "Talal" } };
             return response;
         }
         public static ServiceResponse<EditTrackerVM> GetEditTrackerServiceResponse()
