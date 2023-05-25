@@ -107,9 +107,12 @@
             </td>
             <td class="btn-group-vertical">
                     @{
-                        if (this.User.IsInRole("Trainee") || this.User.IsInRole("Admin"))
+                        if (this.User.IsInRole("Trainee"))
                         {
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                        }
+                        if (this.User.IsInRole("Trainee") || this.User.IsInRole("Admin"))
+                        {
                             <a class="btn btn-danger">
                                 @using (Html.BeginForm("Delete", "Trackers", new { id = item.Id }))
                                 {
