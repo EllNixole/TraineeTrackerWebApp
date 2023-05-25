@@ -66,7 +66,7 @@ namespace TraineeTracker.App.Services
                 return response;
             }
 
-            if (trackerToDo.SpartanId == spartan.Id)
+            if (trackerToDo.SpartanId == spartan.Id || spartan.Role == "Admin")
             {
 				string spartanId = trackerToDo.SpartanId;
 				Spartan spart = await _context.Spartans.FindAsync(spartanId);
@@ -79,18 +79,6 @@ namespace TraineeTracker.App.Services
                 response.Message = "Tracker entry removed";
             }
 
-            else if (spartan.Role == "Admin")
-            {
-                string spartanId = trackerToDo.SpartanId;
-                Spartan spart = await _context.Spartans.FindAsync(spartanId);
-                response.Data = _mapper.Map<TrackerVM>(trackerToDo);
-                response.Data.Spartan = _mapper.Map<SpartanDTO>(spart);
-
-                _context.TrackerItems.Remove(trackerToDo);
-                await _context.SaveChangesAsync();
-                response.Success = true;
-                response.Message = "Tracker entry removed";
-            }
             return response;
         }
 
