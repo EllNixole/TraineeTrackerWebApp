@@ -29,17 +29,19 @@ namespace TraineeTrackerTests
             var mockService = new Mock<ITrackerService>();
             var fakeSpartanServiceResponse = Helper.GetSpartanServiceResponse();
             mockService.Setup(s => s.GetUserAsync(It.IsAny<HttpContext>()).Result).Returns(fakeSpartanServiceResponse);
-            mockService.Setup(s => s.GetTrackerEntriesAsync(fakeSpartanServiceResponse.Data, It.IsAny<string>(), null).Result).Returns(Helper.GetTrackerListServiceResponse());
+            mockService.Setup(s => s.GetTrackerEntriesAsync(fakeSpartanServiceResponse.Data, It.IsAny<string>(), It.IsAny<string>()).Result).Returns(Helper.GetTrackerListServiceResponse());
+            mockService.Setup(s => s.GetRole(It.IsAny<HttpContext>())).Returns("Trainee");
 
             _sut = new TrackersController(mockService.Object);
 
-            //var result = _sut.Index().Result;
 
-            //Assert.That(result, Is.InstanceOf<ViewResult>());
+            var result = _sut.Index(It.IsAny<string>(), It.IsAny<string>()).Result;
 
-            //var viewResult = result as ViewResult;
+            Assert.That(result, Is.InstanceOf<ViewResult>());
 
-            //Assert.That(viewResult.Model, Is.InstanceOf<IEnumerable<TrackerVM>>());
+            var viewResult = result as ViewResult;
+
+            Assert.That(viewResult.Model, Is.InstanceOf<IEnumerable<TrackerVM>>());
         }
         [Test]
         [Category("Index")]
@@ -48,18 +50,19 @@ namespace TraineeTrackerTests
             var mockService = new Mock<ITrackerService>();
             var fakeSpartanServiceResponse = Helper.GetSpartanServiceResponse();
             mockService.Setup(s => s.GetUserAsync(It.IsAny<HttpContext>()).Result).Returns(fakeSpartanServiceResponse);
-            mockService.Setup(s => s.GetTrackerEntriesAsync(fakeSpartanServiceResponse.Data, It.IsAny<string>(), null)).ReturnsAsync(Helper.GetFailedServiceResponse<IEnumerable<TrackerVM>>("Problem!"));
+            mockService.Setup(s => s.GetTrackerEntriesAsync(fakeSpartanServiceResponse.Data, It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(Helper.GetFailedServiceResponse<IEnumerable<TrackerVM>>("Problem!"));
+            mockService.Setup(s => s.GetRole(It.IsAny<HttpContext>())).Returns("Trainee");
 
             _sut = new TrackersController(mockService.Object);
 
-            //var result = _sut.Index().Result;
+            var result = _sut.Index(It.IsAny<string>(), It.IsAny<string>()).Result;
 
-            //Assert.That(result, Is.InstanceOf<ObjectResult>());
+            Assert.That(result, Is.InstanceOf<ObjectResult>());
 
-            //var objResult = result as ObjectResult;
+            var objResult = result as ObjectResult;
 
-            //Assert.That(objResult.ToJson(), Does.Contain("Problem!"));
-            //Assert.That((int)objResult.StatusCode, Is.EqualTo(500));
+            Assert.That(objResult.ToJson(), Does.Contain("Problem!"));
+            Assert.That((int)objResult.StatusCode, Is.EqualTo(500));
         }
 
         //Test with null spartan too. 

@@ -10,9 +10,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  bg-light border-bottom box-shadow mb-3" style="padding-right: 40px;" >
             <div class="container-fluid">
-                <img src="/SpartaLogo.png" alt="Sparta Logo" width="150" />
+                <img src="/SpartaLogo.png" alt="Sparta Logo" width="150" style="margin-right: 40px;" />
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
@@ -34,9 +34,15 @@
                                 </li>
                             }
                         }
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">Admin</a>
-                        </li>
+                        @{
+                            if (this.User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">Admin</a>
+                                </li>
+                            }
+                        }
+                        
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -51,7 +57,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - TraineeTracker.App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - Sparta Global - Trainee Tracker App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
