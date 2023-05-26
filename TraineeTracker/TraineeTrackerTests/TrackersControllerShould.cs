@@ -34,6 +34,7 @@ namespace TraineeTrackerTests
 
             _sut = new TrackersController(mockService.Object);
 
+
             var result = _sut.Index(It.IsAny<string>(), It.IsAny<string>()).Result;
 
             Assert.That(result, Is.InstanceOf<ViewResult>());

@@ -114,8 +114,8 @@ namespace TraineeTracker.App.Services
             }
 
             var trackerToDo = _mapper.Map<Tracker>(trackerEditVM);
-            _context.Update(trackerToDo);
             trackerToDo.SpartanId = spartan.Id;
+            _context.Update(trackerToDo);
             await _context.SaveChangesAsync();
             return response;
         }
