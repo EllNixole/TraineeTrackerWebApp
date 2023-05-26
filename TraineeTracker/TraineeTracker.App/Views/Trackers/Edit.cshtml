@@ -1,4 +1,4 @@
-﻿@model TraineeTracker.App.Models.ViewModels.TrackerVM
+﻿@model TraineeTracker.App.Models.ViewModels.EditTrackerVM
 
 @{
 	ViewData["Title"] = "Edit";
@@ -13,9 +13,20 @@
 		<form asp-action="Edit">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<input type="hidden" asp-for="Id" />
+			<input type="hidden" asp-for="PercentGrade" />
+			<input type="hidden" asp-for="IsReviewed" />
 			<div class="form-group">
 				<label asp-for="Title" class="control-label"></label>
-				<input asp-for="Title" class="form-control" />
+				<select asp-for="Title" name="Title" class="form-select">
+					<option value="Week 1">Week 1</option>
+					<option value="Week 2">Week 2</option>
+					<option value="Week 3">Week 3</option>
+					<option value="Week 4">Week 4</option>
+					<option value="Week 5">Week 5</option>
+					<option value="Week 6">Week 6</option>
+					<option value="Week 7">Week 7</option>
+					<option value="Week 8">Week 8</option>
+				</select>
 				<span asp-validation-for="Title" class="text-danger"></span>
 			</div>
 			<div class="form-group">
@@ -33,11 +44,6 @@
 				<textarea maxlength="499" asp-for="ContinueDoingText" class="form-control rounded-0" rows="10"></textarea>
 				<span asp-validation-for="ContinueDoingText" class="text-danger"></span>
 			</div>
-			<div class="form-group form-check">
-				<label class="form-check-label">
-					<input class="form-check-input" asp-for="IsReviewed" /> @Html.DisplayNameFor(model => model.IsReviewed)
-				</label>
-			</div>
 			<div class="form-group">
 				<label asp-for="TechnicalSkill" class="control-label"></label>
 				@{
@@ -51,7 +57,6 @@
 					{
 						Text = "Partially Skilled",
 						Value = "Partially Skilled",
-						//Selected = true
 					});
 						techSkills.Add(new SelectListItem
 					{
@@ -80,7 +85,6 @@
 					{
 						Text = "Partially Skilled",
 						Value = "Partially Skilled",
-						//Selected = true
 					});
 						spartanSkills.Add(new SelectListItem
 					{
@@ -96,20 +100,13 @@
 				@Html.DropDownList("SpartanSkill", spartanSkills, new { @class = "form-control" })
 				<span asp-validation-for="SpartanSkill" class="text-danger"></span>
 			</div>
-			<div class="form-group">
-				<label asp-for="DateCreated" class="control-label"></label>
-				<input asp-for="DateCreated" class="form-control" readonly/>
-				<span asp-validation-for="DateCreated" class="text-danger"></span>
-			</div>
+			<br>
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-primary" />
 			</div>
+			<br>
 		</form>
 	</div>
-</div>
-
-<div>
-	<a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

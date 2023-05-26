@@ -250,6 +250,9 @@ namespace TraineeTracker.App.Migrations
                     b.Property<bool>("IsReviewed")
                         .HasColumnType("bit");
 
+                    b.Property<int>("PercentGrade")
+                        .HasColumnType("int");
+
                     b.Property<string>("SpartanId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -285,6 +288,39 @@ namespace TraineeTracker.App.Migrations
             modelBuilder.Entity("TraineeTracker.App.Models.Spartan", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("AboutMe")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Course")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Education")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Experience")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Skills")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Stream")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("Spartan");
                 });

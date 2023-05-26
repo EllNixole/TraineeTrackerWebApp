@@ -7,12 +7,12 @@ namespace TraineeTracker.App.Models
 {
     public class Tracker
     {
-
         [Key]
         public int Id { get; set; }
 
         [StringLength(50)]
         [Required(ErrorMessage = "Title is required")]
+        [DisplayName("Week")]
         public string Title { get; set; } = null!;
 
         [StringLength(500)]
@@ -44,6 +44,9 @@ namespace TraineeTracker.App.Models
         [ForeignKey("Spartan")]
         public string SpartanId { get; set; } = null!;
 
+        [DisplayName("Grade")]
+        [Range(0, 100)]
+        public int PercentGrade { get; set; } = 0;
 
     }
 }
