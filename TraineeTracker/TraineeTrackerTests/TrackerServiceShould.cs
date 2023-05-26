@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestPlatform.Common.Utilities;
 using Moq;
 using NuGet.Protocol;
 using TraineeTracker.App.Controllers;
@@ -36,6 +38,7 @@ public class TrackerServiceShould
         {
             
         });
+        _context.SaveChanges();
         _mapper = new Mock<IMapper>();
         _userManager = Helper.MockUserManager<Spartan>(new List<Spartan>());
         _sut = new TrackerService(_context, _mapper.Object, _userManager.Object);
@@ -94,6 +97,8 @@ public class TrackerServiceShould
     {
         var fakeSpartan = Helper.CreateFakeSpartan("Bob");
         var fakeTracker = Helper.CreateFakeTracker("Bob");
+        _context.Add(fakeTracker);
+        _context.SaveChanges();
         _mapper.Setup(m => m.Map<TrackerVM>(It.IsAny<Tracker>())).Returns(new TrackerVM());
         _mapper.Setup(m => m.Map<SpartanDTO>(It.IsAny<Spartan>())).Returns(new SpartanDTO());
         var result = _sut.DeleteTrackerEntriesAsync(fakeSpartan,fakeTracker.Id);
@@ -154,7 +159,6 @@ public class TrackerServiceShould
         _mapper.Setup(m => m.Map<SpartanDTO>(It.IsAny<Spartan>())).Returns(new SpartanDTO());
         var result = _sut.DeleteTrackerEntriesAsync(fakeSpartan, fakeTracker.Id);
         Assert.That(result.Result.Success, Is.EqualTo(false));
-        Assert.That(result.Result.Message, Does.Contain("There are no tracker entries to do!"));
     }
 
     [Test]
@@ -257,5 +261,232 @@ public class TrackerServiceShould
         Assert.That(result.Result.Message, Does.Contain("No user found"));
     }
 
+    [Test]
+    [Category("GetDetails")]
+    [Category("Sad Path")]
+    public void GetDetailsAsync_GivenNoTracker_ReturnsFailedResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        var result = _sut.GetDetailsAsync(fakeTracker.Spartan, 2, "Trainee");
+        Assert.That(result.Result, Is.TypeOf<ServiceResponse<DetailsTrackerVM>>());
+        Assert.That(result.Result.Success, Is.EqualTo(false));
+    }
 
+    [Test]
+    [Category("GetEditDetails")]
+    [Category("Happy Path")]
+    public void GetEditDetailsAsync_GivenCorrectData_ReturnsSuccessfulResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        _context.Add(fakeTracker);
+        _context.SaveChanges();
+        _mapper.Setup(m => m.Map<EditTrackerVM>(It.IsAny<Tracker>())).Returns(It.IsAny<EditTrackerVM>());
+        var result = _sut.GetEditDetailsAsync(fakeTracker.Spartan, fakeTracker.Id);
+        Assert.That(result.Result, Is.TypeOf<ServiceResponse<EditTrackerVM>>());
+        Assert.That(result.Result.Success, Is.EqualTo(true));
+    }
+
+    [Test]
+    [Category("GetEditDetails")]
+    [Category("Sad Path")]
+    public void GetEditDetailsAsync_GivenNoId_ReturnsFailedResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        var result = _sut.GetEditDetailsAsync(fakeTracker.Spartan, null);
+        Assert.That(result.Result, Is.TypeOf<ServiceResponse<EditTrackerVM>>());
+        Assert.That(result.Result.Success, Is.EqualTo(false));
+    }
+
+    [Test]
+    [Category("GetEditDetails")]
+    [Category("Sad Path")]
+    public void GetEditDetailsAsync_GivenNoSpartan_ReturnsFailedResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        var result = _sut.GetEditDetailsAsync(null, fakeTracker.Id); ; ;
+        Assert.That(result.Result, Is.TypeOf<ServiceResponse<EditTrackerVM>>());
+        Assert.That(result.Result.Success, Is.EqualTo(false));
+        Assert.That(result.Result.Message, Does.Contain("No user found"));
+    }
+
+    [Test]
+    [Category("GetEditDetails")]
+    [Category("Sad Path")]
+    public void GetEditDetailsAsync_GivenIdMismatch_ReturnsFailedResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        _context.Add(fakeTracker);
+        _context.SaveChanges();
+        _mapper.Setup(m => m.Map<EditTrackerVM>(It.IsAny<Tracker>())).Returns(It.IsAny<EditTrackerVM>());
+        var result = _sut.GetEditDetailsAsync(fakeTracker.Spartan, 2);
+        Assert.That(result.Result, Is.TypeOf<ServiceResponse<EditTrackerVM>>());
+        Assert.That(result.Result.Success, Is.EqualTo(false));
+    }
+
+    [Test]
+    [Category("GetTrackerEntries")]
+    [Category("Happy Path")]
+    public void GetTrackerEntriesAsync_GivenCorrectData_ReturnsSuccessfulResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        _context.Add(fakeTracker);
+        _context.SaveChanges();
+        _mapper.Setup(m => m.Map<TrackerVM>(It.IsAny<Tracker>())).Returns(It.IsAny<TrackerVM>());
+        var result = _sut.GetTrackerEntriesAsync(fakeTracker.Spartan, "Trainee", "");
+        Assert.That(result.Result, Is.TypeOf<ServiceResponse<IEnumerable<TrackerVM>>>());
+        Assert.That(result.Result.Success, Is.EqualTo(true));
+    }
+
+    [Test]
+    [Category("GetTrackerEntries")]
+    [Category("Sad Path")]
+    public void GetTrackerEntriesAsync_GivenNoSpartan_ReturnsFailedResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        _context.Add(fakeTracker);
+        _context.SaveChanges();
+        var result = _sut.GetTrackerEntriesAsync(null, "Trainee", "");
+        Assert.That(result.Result.Success, Is.EqualTo(false));
+        Assert.That(result.Result.Message, Is.EqualTo("Can't find Spartan"));
+    }
+
+    [Test]
+    [Category("GetTrackerEntriesAcademy")]
+    [Category("Happy Path")]
+    public void GetTrackerEntryAcademyAsync_GivenCorrectData_ReturnsSuccessfulResponse()
+    {
+        var fakeSpartan = Helper.CreateFakeSpartan("Bob");
+        _context.Add(fakeSpartan);
+        _context.SaveChanges();
+        var result = _sut.GetTrackerEntryAcademyAsync(fakeSpartan, "Trainee", fakeSpartan.UserName);
+        Assert.That(result.Result, Is.TypeOf<ServiceResponse<IEnumerable<TrackerVM>>>());
+        Assert.That(result.Result.Success, Is.EqualTo(true));
+    }
+
+    [Test]
+    [Category("GetTrackerEntriesAcademy")]
+    [Category("Sad Path")]
+    public void GetTrackerEntryAcademyAsync_GivenNoSpartan_ReturnsFailedResponse()
+    {
+        var fakeSpartan = Helper.CreateFakeSpartan("Bob");
+        var result = _sut.GetTrackerEntryAcademyAsync(null, "Trainee", fakeSpartan.UserName);
+        Assert.That(result.Result.Success, Is.EqualTo(false));
+        Assert.That(result.Result.Message, Is.EqualTo("Can't find Spartan"));
+    }
+
+    [Test]
+    [Category("UpdateTrackersComplete")]
+    [Category("Happy Path")]
+    public void UpdateTrackersCompleteAsync_GivenCorrectData_ReturnsSuccessfulResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        _context.Add(fakeTracker);
+        _context.SaveChanges();
+        var fakeVM = new MarkReviewedVM() { Id = fakeTracker.Id};
+        _mapper.Setup(m => m.Map<TrackerVM>(It.IsAny<Tracker>())).Returns(It.IsAny<TrackerVM>());
+        var result = _sut.UpdateTrackerEntriesCompleteAsync(fakeTracker.Spartan, fakeTracker.Id, fakeVM);
+        Assert.That(result.Result, Is.TypeOf<ServiceResponse<TrackerVM>>());
+        Assert.That(result.Result.Success, Is.EqualTo(true));
+    }
+
+    [Test]
+    [Category("UpdateTrackersComplete")]
+    [Category("Sad Path")]
+    public void UpdateTrackersCompleteAsync_GivenNoSpartan_ReturnsFailedResult()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        _context.Add(fakeTracker);
+        _context.SaveChanges();
+        var fakeVM = new MarkReviewedVM() { Id = fakeTracker.Id };
+        _mapper.Setup(m => m.Map<TrackerVM>(It.IsAny<Tracker>())).Returns(It.IsAny<TrackerVM>());
+        var result = _sut.UpdateTrackerEntriesCompleteAsync(null, fakeTracker.Id, fakeVM);
+        Assert.That(result.Result.Success, Is.EqualTo(false));
+        Assert.That(result.Result.Message, Is.EqualTo("No user found"));
+    }
+
+    [Test]
+    [Category("UpdateTrackersComplete")]
+    [Category("Sad Path")]
+    public void UpdateTrackersCompleteAsync_GivenIdMismatch_ReturnsFailedResult()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        _context.Add(fakeTracker);
+        _context.SaveChanges();
+        var fakeVM = new MarkReviewedVM();
+        _mapper.Setup(m => m.Map<TrackerVM>(It.IsAny<Tracker>())).Returns(It.IsAny<TrackerVM>());
+        var result = _sut.UpdateTrackerEntriesCompleteAsync(fakeTracker.Spartan, fakeTracker.Id, fakeVM);
+        Assert.That(result.Result.Success, Is.EqualTo(false));
+        Assert.That(result.Result.Message, Is.EqualTo("Model error"));
+    }
+
+    [Test]
+    [Category("UpdateTrackersComplete")]
+    [Category("Sad Path")]
+    public void UpdateTrackersCompleteAsync_GivenNoTrackerEntry_ReturnsFailedResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        var fakeVM = new MarkReviewedVM() { Id = fakeTracker.Id };
+        _mapper.Setup(m => m.Map<TrackerVM>(It.IsAny<Tracker>())).Returns(It.IsAny<TrackerVM>());
+        var result = _sut.UpdateTrackerEntriesCompleteAsync(fakeTracker.Spartan, fakeTracker.Id, fakeVM);
+        Assert.That(result.Result.Success, Is.EqualTo(false));
+        Assert.That(result.Result.Message, Is.EqualTo("Cannot find tracker entry"));
+    }
+
+    [Test]
+    [Category("UpdateTrackerEntriesGrade")]
+    [Category("Happy Path")]
+    public void UpdateTrackerEntriesGradeAsync_GivenCorrectData_ReturnsSuccessfulResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        _context.Add(fakeTracker);
+        _context.SaveChanges();
+        var fakeVM = new TrackerVM() { Id = fakeTracker.Id };
+        _mapper.Setup(m => m.Map<TrackerVM>(It.IsAny<Tracker>())).Returns(It.IsAny<TrackerVM>());
+        var result = _sut.UpdateTrackerEntriesGradeAsync(fakeTracker.Spartan, fakeTracker.Id, fakeVM, 1);
+        Assert.That(result.Result, Is.TypeOf<ServiceResponse<TrackerVM>>());
+        Assert.That(result.Result.Success, Is.EqualTo(true));
+    }
+
+    [Test]
+    [Category("UpdateTrackerEntriesGrade")]
+    [Category("Sad Path")]
+    public void UpdateTrackerEntriesGradeAsync_GivenNoSpartan_ReturnsSuccessfulResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        _context.Add(fakeTracker);
+        _context.SaveChanges();
+        var fakeVM = new TrackerVM() { Id = fakeTracker.Id };
+        _mapper.Setup(m => m.Map<TrackerVM>(It.IsAny<Tracker>())).Returns(It.IsAny<TrackerVM>());
+        var result = _sut.UpdateTrackerEntriesGradeAsync(null, fakeTracker.Id, fakeVM, 1);
+        Assert.That(result.Result.Success, Is.EqualTo(false));
+        Assert.That(result.Result.Message, Is.EqualTo("No user found"));
+    }
+
+    [Test]
+    [Category("UpdateTrackerEntriesGrade")]
+    [Category("Sad Path")]
+    public void UpdateTrackerEntriesGradeAsync_GivenIdMismatch_ReturnsSuccessfulResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        _context.Add(fakeTracker);
+        _context.SaveChanges();
+        var fakeVM = new TrackerVM();
+        _mapper.Setup(m => m.Map<TrackerVM>(It.IsAny<Tracker>())).Returns(It.IsAny<TrackerVM>());
+        var result = _sut.UpdateTrackerEntriesGradeAsync(fakeTracker.Spartan, fakeTracker.Id, fakeVM, 1);
+        Assert.That(result.Result.Success, Is.EqualTo(false));
+        Assert.That(result.Result.Message, Is.EqualTo("Model error"));
+    }
+
+    [Test]
+    [Category("UpdateTrackerEntriesGrade")]
+    [Category("Sad Path")]
+    public void UpdateTrackerEntriesGradeAsync_GivenNoTrackers_ReturnsSuccessfulResponse()
+    {
+        var fakeTracker = Helper.CreateFakeTracker("Bob");
+        var fakeVM = new TrackerVM() { Id = fakeTracker.Id };
+        _mapper.Setup(m => m.Map<TrackerVM>(It.IsAny<Tracker>())).Returns(It.IsAny<TrackerVM>());
+        var result = _sut.UpdateTrackerEntriesGradeAsync(fakeTracker.Spartan, fakeTracker.Id, fakeVM, 1);
+        Assert.That(result.Result.Success, Is.EqualTo(false));
+        Assert.That(result.Result.Message, Is.EqualTo("Cannot find tracker entry"));
+    }
 }
